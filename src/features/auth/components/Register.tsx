@@ -32,6 +32,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { registerSchema } from "@/shared/schema/auth.schema";
+import logo from "@/assets/logo.svg";
 import type { RegisterPayload } from "@/shared/types/auth.types";
 import type { ErrorResponse } from "@/shared/types/response.types";
 
@@ -74,9 +75,16 @@ export default function Register() {
 
   return (
     <Card className="w-full xs:w-md">
-      <CardHeader>
-        <CardTitle>Create a new account</CardTitle>
-        <CardDescription>Start your journey with us</CardDescription>
+      <CardHeader className="flex flex-col items-center">
+        <img
+          src={logo}
+          alt="Serenphéa logo"
+          className="w-24 h-24 border border-red-500 block"
+        />
+        <CardTitle>Create your account</CardTitle>
+        <CardDescription>
+          Book stays, manage listings, and travel with ease
+        </CardDescription>
       </CardHeader>
       <FieldSeparator />
       <CardContent>
