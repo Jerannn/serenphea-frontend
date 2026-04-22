@@ -1,9 +1,7 @@
 import HomePage from "@/pages/HomePage";
-import LoginPage from "@/pages/LoginPage";
-import RegisterPage from "@/pages/RegisterPage";
 import DashboardPage from "@/pages/DashboardPage";
 import RootLayout from "./layout/RootLayout";
-import AuthLayout from "./layout/AuthLayout";
+import authRoutes from "./routes/authRoutes";
 
 export const routes = [
   {
@@ -17,17 +15,7 @@ export const routes = [
       },
     ],
   },
-
-  {
-    path: "/auth",
-    Component: AuthLayout,
-    errorElement: <div>404 Not Found</div>,
-    children: [
-      { path: "login", Component: LoginPage },
-      { path: "register", Component: RegisterPage },
-    ],
-  },
-
+  authRoutes,
   {
     path: "/dashboard",
     Component: DashboardPage,
