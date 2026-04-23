@@ -1,18 +1,6 @@
-export type SuccessResponse = {
+export type SuccessResponse<T> = {
   status: string;
-  data: {
-    expiresAt: string;
-    user: {
-      id: string;
-      full_name: string;
-      email: string;
-      roles: "guest" | "host" | "admin";
-      status: "pending" | "active" | "inactive" | "suspended";
-      email_verified_at: string | null;
-      created_at: string;
-      updated_at: string;
-    };
-  };
+  data: T;
 };
 
 export type ErrorResponse = {

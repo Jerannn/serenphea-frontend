@@ -4,15 +4,17 @@ import useAuthStore from "../auth.store";
 import { api } from "@/lib/api";
 import type { UserSuccessResponse } from "@/shared/types/auth.types";
 
-export default async function registerAction({ request }: ActionFunctionArgs) {
+export default async function verifyEmailAction({
+  request,
+}: ActionFunctionArgs): Promise<ErrorResponse | Response> {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
 
-  const response = await api("/auth/register", {
+  const response = await api("/auth/email/verify", {
     method: "POST",
     body: JSON.stringify(data),
   });
-  console.log(response);
+
   if (response.status === "fail") {
     return response as ErrorResponse;
   }
@@ -21,5 +23,5 @@ export default async function registerAction({ request }: ActionFunctionArgs) {
   const setUser = useAuthStore.getState().setUser;
   setUser(result.data.user);
 
-  return redirect("/auth/verify-email");
+  return redirect("/");
 }
