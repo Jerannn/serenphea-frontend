@@ -12,7 +12,6 @@ import {
   FieldError,
   FieldGroup,
   FieldLabel,
-  FieldSeparator,
 } from "@/components/ui/field";
 
 import {
@@ -32,15 +31,15 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { registerSchema } from "@/shared/schema/auth.schema";
-import logo from "@/assets/logo.svg";
+import logo from "@/assets/logo.png";
 import type { RegisterPayload } from "@/shared/types/auth.types";
 import type { ErrorResponse } from "@/shared/types/response.types";
 
 const initialValues: RegisterPayload = {
-  fullName: "",
-  email: "",
-  password: "",
-  confirmPassword: "",
+  fullName: "Sha",
+  email: "sha@gmail.com",
+  password: "sha123",
+  confirmPassword: "sha123",
 };
 
 export default function Register() {
@@ -62,7 +61,7 @@ export default function Register() {
   });
 
   const onSubmit = (data: RegisterPayload) => {
-    submit(data, { method: "post" });
+    submit(data, { method: "post", action: "/auth/register" });
   };
 
   useEffect(() => {
@@ -74,20 +73,16 @@ export default function Register() {
   }, [error, setError]);
 
   return (
-    <Card className="w-full xs:w-md">
-      <CardHeader className="flex flex-col items-center">
-        <img
-          src={logo}
-          alt="Serenphéa logo"
-          className="w-24 h-24 border border-red-500 block"
-        />
+    <Card className="w-full xs:w-md gap-10 shadow-sm ring-0">
+      <CardHeader className="flex flex-col items-center mt-5">
+        <img src={logo} alt="Serenphéa logo" />
+
         <CardTitle>Create your account</CardTitle>
         <CardDescription>
           Book stays, manage listings, and travel with ease
         </CardDescription>
       </CardHeader>
-      <FieldSeparator />
-      <CardContent>
+      <CardContent className="px-10">
         <form onSubmit={handleSubmit(onSubmit)} id="register-form">
           <FieldGroup>
             {/* full name */}
@@ -187,7 +182,7 @@ export default function Register() {
         </form>
       </CardContent>
 
-      <CardFooter className="flex-col gap-2">
+      <CardFooter className="flex-col gap-2 px-10">
         <Button className="w-full py-5" type="submit" form="register-form">
           {isSubmitting ? (
             <Loader2 className="mr-2 animate-spin" />
@@ -195,7 +190,7 @@ export default function Register() {
             "Register"
           )}
         </Button>
-        <p className="text-center text-sm text-muted-foreground">
+        <p className="text-center text-sm text-muted-foreground mt-2">
           Already have an account?
           <Link to="/auth/login" className="pl-1 text-primary hover:underline">
             Log in

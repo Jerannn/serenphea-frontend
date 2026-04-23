@@ -13,3 +13,7 @@ export const registerSchema = z
     message: "Passwords do not match",
     path: ["confirmPassword"],
   });
+
+export const verifyCodeSchema = z.object({
+  otp: z.string().trim(),
+});

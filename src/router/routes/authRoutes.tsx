@@ -5,6 +5,8 @@ import VerifyEmailPage from "@/pages/auth/VerifyEmailPage";
 import ForgotPasswordPage from "@/pages/auth/ForgotPasswordPage";
 import ResetPasswordPage from "@/pages/auth/ResetPasswordPage";
 import registerAction from "@/features/auth/actions/registerAction";
+import verifyEmailAction from "@/features/auth/actions/verifyEmailAction";
+import verifyEmailLoader from "@/features/auth/loaders/verifyEmailLoader";
 
 const authRoutes = {
   path: "/auth",
@@ -17,7 +19,12 @@ const authRoutes = {
       Component: RegisterPage,
       action: registerAction,
     },
-    { path: "verify-email", Component: VerifyEmailPage },
+    {
+      path: "verify-email",
+      Component: VerifyEmailPage,
+      action: verifyEmailAction,
+      loader: verifyEmailLoader,
+    },
     { path: "forgot-password", Component: ForgotPasswordPage },
     { path: "reset-password", Component: ResetPasswordPage },
   ],
