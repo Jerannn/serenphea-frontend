@@ -13,9 +13,9 @@ export const routes = [
         index: true,
         Component: HomePage,
       },
+      authRoutes,
     ],
   },
-  authRoutes,
   {
     path: "/dashboard",
     Component: DashboardPage,
