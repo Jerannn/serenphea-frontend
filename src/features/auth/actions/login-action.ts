@@ -1,0 +1,29 @@
+import { api } from "@/lib/api";
+import type { UserSuccessResponse } from "@/shared/types/auth-types";
+import type { ErrorResponse } from "@/shared/types/response-types";
+import { redirect, type ActionFunctionArgs } from "react-router-dom";
+import useAuthStore from "../auth.store";
+
+export default async function action({ request }: ActionFunctionArgs) {
+  const formData = await request.formData();
+  const data = Object.fromEntries(formData);
+
+  const response = await api("/auth/login", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+
+  console.log(response);
+  if (response.status === "fail") {
+    return response as ErrorResponse;
+  }
+
+  const result = response as UserSuccessResponse;
+  const setUser = useAuthStore.getState().setUser;
+  setUser(result.data.user);
+  if (result.data.user.status === "pending") {
+    return redirect("/auth/verify-email");
+  }
+
+  return redirect("/");
+}

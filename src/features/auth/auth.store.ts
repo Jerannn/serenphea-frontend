@@ -1,4 +1,4 @@
-import type { User } from "@/shared/types/auth.types";
+import type { User } from "@/shared/types/auth-types";
 import { create } from "zustand";
 
 interface AuthState {

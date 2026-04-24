@@ -19,12 +19,12 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import useAuthStore from "../auth.store";
-import type { ErrorResponse } from "@/shared/types/response.types";
+import type { ErrorResponse } from "@/shared/types/response-types";
 import type {
   VerifyCodePayload,
   VerifyEmailResponse,
-} from "@/shared/types/auth.types";
-import { verifyCodeSchema } from "@/shared/schema/auth.schema";
+} from "@/shared/types/auth-types";
+import { verifyCodeSchema } from "@/shared/schema/auth-schema";
 
 export default function VerifyEmail() {
   const [countdown, setCountdown] = useState(0);

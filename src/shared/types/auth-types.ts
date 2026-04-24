@@ -1,8 +1,13 @@
 import type { z } from "zod";
-import type { registerSchema, verifyCodeSchema } from "../schema/auth.schema";
-import type { SuccessResponse } from "./response.types";
+import type {
+  loginSchema,
+  registerSchema,
+  verifyCodeSchema,
+} from "../schema/auth-schema";
+import type { SuccessResponse } from "./response-types";
 
 export type RegisterPayload = z.infer<typeof registerSchema>;
+export type LoginPayload = z.infer<typeof loginSchema>;
 
 export type User = {
   readonly id: string;
