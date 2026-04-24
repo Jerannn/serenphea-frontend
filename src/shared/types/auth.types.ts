@@ -16,8 +16,10 @@ export type User = {
 };
 
 export type VerifyEmailResponse = SuccessResponse<{
-  email: string;
-  expiresAt: string;
+  otp: {
+    code: string;
+    expiresAt: string;
+  };
 }>;
 
 export type UserSuccessResponse = SuccessResponse<{ user: User }>;

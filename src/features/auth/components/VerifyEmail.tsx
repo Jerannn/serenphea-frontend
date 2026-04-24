@@ -35,8 +35,12 @@ export default function VerifyEmail() {
   const submit = useSubmit();
   const navigation = useNavigation();
   const user = useAuthStore((state) => state.user);
-  const expiresAt = otpSuccessData?.data?.expiresAt;
-  const isSubmitting = navigation.state === "submitting";
+  const expiresAt = otpSuccessData?.data?.otp.expiresAt;
+  const currentIntent = navigation.formData?.get("intent");
+  const isVerifying =
+    navigation.state === "submitting" && currentIntent === "verify";
+  const isResending =
+    navigation.state === "submitting" && currentIntent === "resend";
 
   const {
     control,
@@ -67,9 +71,20 @@ export default function VerifyEmail() {
     const payload = {
       email: user?.email || "",
       otp: data.otp,
+      intent: "verify",
     };
 
-    submit(payload, { method: "post", action: "/auth/verify-email" });
+    submit(payload, { method: "post" });
+  };
+
+  const onResend = () => {
+    const payload = {
+      email: user?.email || "",
+      type: "register",
+      intent: "resend",
+    };
+
+    submit(payload, { method: "post" });
   };
 
   useEffect(() => {
@@ -141,8 +156,8 @@ export default function VerifyEmail() {
             )}
           </Field>
 
-          <Button className="w-full mt-8" disabled={isSubmitting}>
-            {isSubmitting ? <Loader2 className="animate-spin" /> : "Verify"}
+          <Button className="w-full mt-8" disabled={isVerifying}>
+            {isVerifying ? <Loader2 className="animate-spin" /> : "Verify"}
           </Button>
         </form>
 
@@ -152,8 +167,13 @@ export default function VerifyEmail() {
         {countdown > 0 ? (
           <p className="pt-2">Resend code in ({countdown}s)</p>
         ) : (
-          <Button variant="link" className="w-fit p-0">
-            Resend code
+          <Button
+            variant="link"
+            className="w-fit p-0"
+            onClick={onResend}
+            disabled={isResending}
+          >
+            {isResending ? <Loader2 className="animate-spin" /> : "Resend Code"}
           </Button>
         )}
       </CardContent>
