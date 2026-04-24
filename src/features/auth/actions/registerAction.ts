@@ -12,7 +12,7 @@ export default async function registerAction({ request }: ActionFunctionArgs) {
     method: "POST",
     body: JSON.stringify(data),
   });
-  console.log(response);
+
   if (response.status === "fail") {
     return response as ErrorResponse;
   }

@@ -21,6 +21,5 @@ export default async function verifyEmailLoader(): Promise<
     return response as ErrorResponse;
   }
 
-  const result = response as VerifyEmailResponse;
-  return result;
+  return response as VerifyEmailResponse;
 }
