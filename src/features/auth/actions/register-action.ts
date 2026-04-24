@@ -1,10 +1,10 @@
-import type { ErrorResponse } from "@/shared/types/response.types";
+import type { ErrorResponse } from "@/shared/types/response-types";
 import { redirect, type ActionFunctionArgs } from "react-router-dom";
 import useAuthStore from "../auth.store";
 import { api } from "@/lib/api";
-import type { UserSuccessResponse } from "@/shared/types/auth.types";
+import type { UserSuccessResponse } from "@/shared/types/auth-types";
 
-export default async function registerAction({ request }: ActionFunctionArgs) {
+export default async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
 

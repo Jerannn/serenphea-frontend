@@ -30,10 +30,10 @@ import {
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
-import { registerSchema } from "@/shared/schema/auth.schema";
+import { registerSchema } from "@/shared/schema/auth-schema";
 import logo from "@/assets/logo.png";
-import type { RegisterPayload } from "@/shared/types/auth.types";
-import type { ErrorResponse } from "@/shared/types/response.types";
+import type { RegisterPayload } from "@/shared/types/auth-types";
+import type { ErrorResponse } from "@/shared/types/response-types";
 
 const initialValues: RegisterPayload = {
   fullName: "Sha",
@@ -183,7 +183,12 @@ export default function Register() {
       </CardContent>
 
       <CardFooter className="flex-col gap-2 px-10">
-        <Button className="w-full py-5" type="submit" form="register-form">
+        <Button
+          className="w-full py-5"
+          type="submit"
+          form="register-form"
+          disabled={isSubmitting}
+        >
           {isSubmitting ? (
             <Loader2 className="mr-2 animate-spin" />
           ) : (

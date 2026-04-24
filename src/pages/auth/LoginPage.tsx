@@ -1,5 +1,5 @@
-type Props = {};
+import Login from "@/features/auth/components/Login";
 
-export default function LoginPage({}: Props) {
-  return <div>LoginPage</div>;
+export default function LoginPage() {
+  return <Login />;
 }
