@@ -66,7 +66,7 @@ export default function Login() {
         <img src={logo} alt="Serenphéa logo" />
 
         <CardTitle>Log in to your account</CardTitle>
-        <CardDescription>
+        <CardDescription className="text-center">
           Book stays, manage listings, and travel with ease
         </CardDescription>
       </CardHeader>
