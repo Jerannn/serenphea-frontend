@@ -95,6 +95,7 @@ export default function Header() {
                 <Sun />
                 Theme
               </DropdownMenuItem>
+              <DropdownMenuSeparator />
               <DropdownMenuItem variant="destructive">
                 <LogOutIcon />
                 Log out
