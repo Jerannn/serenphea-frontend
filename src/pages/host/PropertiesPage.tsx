@@ -12,8 +12,8 @@ export default function PropertiesPage() {
           <h1 className="font-serif text-3xl font-bold m-0">My Properties</h1>
           <p className="text-muted-foreground">Manage your properties</p>
         </div>
-        <Button asChild>
-          <Link to="">
+        <Button asChild className="py-5">
+          <Link to="/host/properties/new">
             <Plus className="w-4 h-4 mr-2" />
             Add new property
           </Link>
