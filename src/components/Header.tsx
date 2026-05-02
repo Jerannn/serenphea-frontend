@@ -43,7 +43,12 @@ export default function Header() {
         <h1>search</h1>
 
         <div className="flex items-center gap-5">
-          <Button className="py-4 px-4">Become a host</Button>
+          <Button
+            className="py-4 px-4"
+            onClick={() => navigate("/host/dashboard")}
+          >
+            Become a host
+          </Button>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
