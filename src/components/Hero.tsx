@@ -4,8 +4,8 @@ import SearchBar from "@/features/search/components/SearchBar";
 
 export default function Hero() {
   return (
-    <div className="flex flex-col items-center bg-linear-to-br from-primary to-foreground py-16 md:py-24">
-      <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl mb-4 text-primary-foreground">
+    <div className="flex flex-col items-center bg-linear-to-br from-primary to-foreground py-16 md:py-24 px-4">
+      <h1 className="font-serif text-4xl md:text-5xl lg:text-6xl mb-4 text-primary-foreground text-center">
         Discover Tranquil Escapes
       </h1>
       <p className="text-lg text-primary-foreground/90">

@@ -24,10 +24,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
+import { formatGuests } from "@/shared/utils/formatGuests";
+
+const defaultGuests = { adults: 0, children: 0, infants: 0 };
 
 export default function GuestSelector() {
-  const [guests, setGuests] = useState({ adults: 0, children: 0, infants: 0 });
+  const [guests, setGuests] = useState(defaultGuests);
   const isAdultDecrementDisabled = guests.children > 0 || guests.infants > 0;
+  const selectedGuest = formatGuests(guests);
 
   const incrementGuest = (guestType: "adults" | "children" | "infants") => {
     setGuests((prevGuests) => {
@@ -52,6 +56,7 @@ export default function GuestSelector() {
       };
     });
   };
+
   return (
     <div className="md:col-span-1">
       <Popover>
@@ -60,6 +65,7 @@ export default function GuestSelector() {
             <FieldLabel htmlFor="inline-start-input">Guests</FieldLabel>
             <InputGroup className="max-w-xs h-12 bg-primary-foreground border-border">
               <InputGroupInput
+                value={selectedGuest || ""}
                 placeholder="Add dates"
                 className="h-full cursor-pointer"
                 readOnly
@@ -68,14 +74,16 @@ export default function GuestSelector() {
                 <Users />
               </InputGroupAddon>
 
-              <InputGroupAddon
-                align="inline-end"
-                onPointerDown={(e) => e.stopPropagation()}
-                onClick={() => {}}
-                className="mr-1 p-1 hover:bg-muted rounded-full cursor-pointer"
-              >
-                <X className="h-4 w-4" />
-              </InputGroupAddon>
+              {guests.adults > 0 && (
+                <InputGroupAddon
+                  align="inline-end"
+                  onPointerDown={(e) => e.stopPropagation()}
+                  onClick={() => setGuests(defaultGuests)}
+                  className="mr-1 p-1 hover:bg-muted rounded-full cursor-pointer"
+                >
+                  <X className="h-4 w-4" />
+                </InputGroupAddon>
+              )}
             </InputGroup>
           </Field>
         </PopoverTrigger>

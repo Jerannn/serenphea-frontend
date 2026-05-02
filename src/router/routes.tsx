@@ -1,7 +1,9 @@
 import HomePage from "@/pages/HomePage";
-import DashboardPage from "@/pages/DashboardPage";
+import DashboardPage from "@/pages/host/DashboardPage";
 import RootLayout from "./layout/RootLayout";
 import authRoutes from "./routes/authRoutes";
+import DashboardLayout from "./layout/DashboardLayout";
+import Properties from "@/pages/host/Properties";
 
 export const routes = [
   {
@@ -17,20 +19,18 @@ export const routes = [
     ],
   },
   {
-    path: "/dashboard",
-    Component: DashboardPage,
-    // children: [
-    //   {
-    //     path: "properties",
-    //     // Component: <PropertiesPage />,
-    //     // loader: propertiesLoader,
-    //     // action: createPropertyAction,
-    //   },
-    //   {
-    //     path: "properties/:id",
-    //     // Component: <PropertyDetailsPage />,
-    //     // loader: propertyLoader,
-    //   },
-    // ],
+    path: "/host",
+    Component: DashboardLayout,
+    children: [
+      {
+        index: true,
+        path: "dashboard",
+        Component: DashboardPage,
+      },
+      {
+        path: "properties",
+        Component: Properties,
+      },
+    ],
   },
 ];
