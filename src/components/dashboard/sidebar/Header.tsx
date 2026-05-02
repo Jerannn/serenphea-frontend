@@ -28,8 +28,8 @@ export default function Header() {
             </div>
 
             <div>
-              <h1 className="font-serif text-xl/4 tracking-wide truncate font-semibold">
-                HOST
+              <h1 className="font-serif text-xl/4 tracking-wide truncate font-medium">
+                Host
               </h1>
               <p className="text-xs/3">Serenphéa</p>
             </div>
