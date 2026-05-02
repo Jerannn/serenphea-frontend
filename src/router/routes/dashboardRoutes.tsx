@@ -1,3 +1,4 @@
+import AddPropertyPage from "@/pages/host/AddPropertyPage";
 import DashboardLayout from "../layout/DashboardLayout";
 import DashboardPage from "@/pages/host/DashboardPage";
 import PropertiesPage from "@/pages/host/PropertiesPage";
@@ -16,6 +17,11 @@ const dashboardRoutes = {
       path: "properties",
       Component: PropertiesPage,
       handle: { title: "Properties" },
+    },
+    {
+      path: "properties/new",
+      Component: AddPropertyPage,
+      handle: { title: "New Property" },
     },
   ],
 };
