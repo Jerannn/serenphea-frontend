@@ -45,7 +45,7 @@ export default function Header() {
         <div className="flex items-center gap-5">
           <Button
             className="py-4 px-4"
-            onClick={() => navigate("/host/dashboard")}
+            onClick={() => navigate("/become-host")}
           >
             Become a host
           </Button>
