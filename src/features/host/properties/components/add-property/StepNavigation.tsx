@@ -17,10 +17,10 @@ export default function StepNavigation({
   const isLastStep = step === totalSteps - 1;
 
   return (
-    <div className="flex items-center justify-between mt-8 pt-8 border-t border-border/40">
-      <Button 
-        variant="ghost" 
-        onClick={onBack} 
+    <div className="border-t border-border/40 px-4 py-4  flex items-center justify-between">
+      <Button
+        variant="ghost"
+        onClick={onBack}
         disabled={step === 0}
         className="gap-2 text-muted-foreground hover:text-foreground hover:bg-secondary/80 transition-all rounded-xl px-4"
       >
@@ -28,7 +28,7 @@ export default function StepNavigation({
         <span className="hidden sm:inline">Back</span>
       </Button>
 
-      <Button 
+      <Button
         onClick={onNext}
         className="gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all rounded-xl px-6 sm:px-8 h-11"
       >

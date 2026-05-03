@@ -1,7 +1,8 @@
-import HomePage from "@/pages/HomePage";
+import HomePage from "@/pages/app/HomePage";
 import RootLayout from "./layout/RootLayout";
 import authRoutes from "./routes/authRoutes";
 import dashboardRoutes from "./routes/dashboardRoutes";
+import BecomeHostPage from "@/pages/app/BecomeHostPage";
 
 export const routes = [
   {
@@ -12,6 +13,10 @@ export const routes = [
       {
         index: true,
         Component: HomePage,
+      },
+      {
+        path: "become-host",
+        Component: BecomeHostPage,
       },
       authRoutes,
     ],

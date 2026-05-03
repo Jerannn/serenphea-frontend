@@ -5,7 +5,7 @@ import PropertiesTabs from "@/features/host/properties/components/PropertiesTabs
 
 export default function PropertiesPage() {
   return (
-    <div>
+    <div className="p-4 md:p-8">
       {/* header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-5">
         <div>

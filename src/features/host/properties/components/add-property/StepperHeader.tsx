@@ -1,8 +1,16 @@
+import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { Check } from "lucide-react";
 
+type Step = {
+  id: number;
+  title: string;
+  description: string;
+  isCompleted: boolean;
+};
+
 type StepperHeaderProps = {
-  steps: { id: number; title: string }[];
+  steps: Step[];
   currentStep: number;
 };
 
@@ -13,54 +21,55 @@ export default function StepperHeader({
   return (
     <div className="w-full px-2 sm:px-8">
       <div className="relative flex items-center justify-between w-full">
-        {/* Background Line */}
-        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-secondary/60 rounded-full -z-10" />
-
-        {/* Active Line */}
-        <div
-          className="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-primary rounded-full -z-10 transition-all duration-500 ease-out"
-          style={{ width: `${(currentStep / (steps.length - 1)) * 100}%` }}
-        />
-
         {steps.map((step, index) => {
-          const isCompleted = currentStep > index;
-          const isActive = currentStep === index;
-
           return (
-            <div
-              key={step.id}
-              className="relative flex flex-col items-center group"
-            >
+            <>
               <div
-                className={cn(
-                  "w-8 h-8 rounded-full flex items-center justify-center text-sm sm:text-base font-semibold transition-all duration-500 border-[3px] bg-background",
-                  isCompleted
-                    ? "bg-primary border-primary text-primary-foreground shadow-lg shadow-primary/30"
-                    : isActive
-                      ? "border-primary text-primary shadow-lg shadow-primary/20 ring-4 ring-primary/10"
-                      : "border-muted text-muted-foreground group-hover:border-primary/40 group-hover:text-primary/60",
-                )}
+                key={step.id}
+                className="relative flex flex-col items-center"
               >
-                {isCompleted ? (
-                  <Check className="w-4 h-4" />
-                ) : (
-                  <span className="text-xs">{index + 1}</span>
-                )}
+                <div
+                  className={cn(
+                    "w-8 h-8 rounded-full flex items-center justify-center text-sm sm:text-base font-semibold transition-all duration-500 bg-muted",
+                    step.isCompleted
+                      ? `bg-primary text-white ${index === currentStep && "bg-accent"}`
+                      : index === currentStep
+                        ? "text-white bg-accent "
+                        : "text-muted-foreground",
+                  )}
+                >
+                  {step.isCompleted ? (
+                    <Check className={"w-4 h-4"} />
+                  ) : (
+                    index + 1
+                  )}
+                </div>
+
+                <div className="flex flex-col items-center mt-3">
+                  <span
+                    className={cn(
+                      "text-sm font-medium whitespace-nowrap bg-background",
+                      index === currentStep
+                        ? "text-foreground font-semibold"
+                        : "text-muted-foreground",
+                    )}
+                  >
+                    {step.title}
+                  </span>
+                  <span className="text-xs mt-1 text-center text-muted-foreground">
+                    {step.description}
+                  </span>
+                </div>
               </div>
-              <span
-                className={cn(
-                  "absolute -bottom-8 w-max text-center text-xs sm:text-sm font-medium transition-colors duration-300",
-                  isActive
-                    ? "text-foreground font-semibold"
-                    : "text-muted-foreground",
-                  isCompleted && "text-foreground/80",
-                )}
-              >
-                {step.title}
-              </span>
-            </div>
+            </>
           );
         })}
+        <div className="absolute top-1/2 translate-y-2 h-2 w-6 bg-background" />
+        <div className="absolute -right-1 top-1/2 translate-y-2 h-2 w-3 bg-background" />
+        <Progress
+          value={(currentStep / (steps.length - 1)) * 100}
+          className="absolute top-1/2 translate-y-2.5 -z-10 transition-all duration-500 ease-out"
+        />
       </div>
     </div>
   );

@@ -26,7 +26,7 @@ export default function DashboardLayout() {
             <Separator orientation="vertical" className="self-stretch" />
             <h1 className="text-base font-medium">{title}</h1>
           </header>
-          <main className="p-4">
+          <main>
             <Outlet />
           </main>
         </>
