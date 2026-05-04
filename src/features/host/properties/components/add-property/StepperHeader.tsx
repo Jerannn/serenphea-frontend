@@ -23,45 +23,36 @@ export default function StepperHeader({
       <div className="relative flex items-center justify-between w-full">
         {steps.map((step, index) => {
           return (
-            <>
+            <div key={step.id} className="relative flex flex-col items-center">
               <div
-                key={step.id}
-                className="relative flex flex-col items-center"
+                className={cn(
+                  "w-8 h-8 rounded-full flex items-center justify-center text-sm sm:text-base font-semibold transition-all duration-500 bg-muted",
+                  step.isCompleted
+                    ? `bg-primary text-white ${index === currentStep && "bg-accent"}`
+                    : index === currentStep
+                      ? "text-white bg-accent "
+                      : "text-muted-foreground",
+                )}
               >
-                <div
+                {step.isCompleted ? <Check className={"w-4 h-4"} /> : index + 1}
+              </div>
+
+              <div className="flex flex-col items-center mt-3">
+                <span
                   className={cn(
-                    "w-8 h-8 rounded-full flex items-center justify-center text-sm sm:text-base font-semibold transition-all duration-500 bg-muted",
-                    step.isCompleted
-                      ? `bg-primary text-white ${index === currentStep && "bg-accent"}`
-                      : index === currentStep
-                        ? "text-white bg-accent "
-                        : "text-muted-foreground",
+                    "text-sm font-medium whitespace-nowrap bg-background",
+                    index === currentStep
+                      ? "text-foreground font-semibold"
+                      : "text-muted-foreground",
                   )}
                 >
-                  {step.isCompleted ? (
-                    <Check className={"w-4 h-4"} />
-                  ) : (
-                    index + 1
-                  )}
-                </div>
-
-                <div className="flex flex-col items-center mt-3">
-                  <span
-                    className={cn(
-                      "text-sm font-medium whitespace-nowrap bg-background",
-                      index === currentStep
-                        ? "text-foreground font-semibold"
-                        : "text-muted-foreground",
-                    )}
-                  >
-                    {step.title}
-                  </span>
-                  <span className="text-xs mt-1 text-center text-muted-foreground">
-                    {step.description}
-                  </span>
-                </div>
+                  {step.title}
+                </span>
+                <span className="text-xs mt-1 text-center text-muted-foreground">
+                  {step.description}
+                </span>
               </div>
-            </>
+            </div>
           );
         })}
         <div className="absolute top-1/2 translate-y-2 h-2 w-6 bg-background" />

@@ -1,73 +1,38 @@
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import {
   Field,
-  FieldContent,
   FieldDescription,
+  FieldError,
   FieldGroup,
   FieldLabel,
-  FieldTitle,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Home,
-  Building2,
-  Hotel,
-  Warehouse,
-  TreePine,
-  Mountain,
-  Waves,
-  Tent,
-  Caravan,
-  Ship,
-} from "lucide-react";
 import { useState } from "react";
-
-const propertyTypeIcons = {
-  house: Home,
-  apartment: Building2,
-  condo: Building2,
-  townhouse: Building2,
-  duplex: Building2,
-
-  villa: Home,
-  cabin: TreePine,
-  cottage: Home,
-  bungalow: Home,
-  chalet: Mountain,
-  beach_house: Waves,
-
-  hotel: Hotel,
-  boutique_hotel: Hotel,
-  hostel: Hotel,
-  guesthouse: Home,
-  bed_and_breakfast: Home,
-  resort: Hotel,
-
-  loft: Warehouse,
-  studio: Building2,
-  tiny_home: Home,
-  treehouse: TreePine,
-  boat: Ship,
-  camper_rv: Caravan,
-  dome: Home,
-  farm_stay: Home,
-
-  private_room: Home,
-  shared_room: Home,
-
-  campground: Tent,
-  glamping: Tent,
-  tent: Tent,
-
-  serviced_apartment: Building2,
-  aparthotel: Building2,
-};
+import PropertyTypeList from "../PropertyTypeList";
+import type { CreatePropertyInput } from "../../../types";
+import { Controller, useForm } from "react-hook-form";
+import { createPropertySchema } from "@/shared/schema/properties-schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import StepNavigation from "../StepNavigation";
+import { useNavigation, useSubmit } from "react-router-dom";
+import { usePropertyStore } from "../../../store/PropertyStore";
+import { is } from "date-fns/locale";
 
 const initialPropertyTypes = [
   // 🏠 Residential
   {
-    id: "11111111-1111-1111-1111-111111111111",
+    id: "03769940-8db1-4da2-9202-d44b1c9dd909",
     key: "house",
     type: "House",
     description: "A standalone residential home",
@@ -274,9 +239,34 @@ const initialPropertyTypes = [
 
 export default function BasicInfoStep() {
   const [propertyTypes, setPropertyType] = useState(initialPropertyTypes);
-  const [selectedType, setSelectedType] = useState("");
-
   const propertyTypeSlice = propertyTypes.slice(0, 6);
+  const base = usePropertyStore((state) => state.property.base);
+  const submit = useSubmit();
+  const navigation = useNavigation();
+  const isSubmitting = navigation.state === "submitting";
+
+  const {
+    control,
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<CreatePropertyInput>({
+    resolver: zodResolver(createPropertySchema),
+    defaultValues: {
+      property_type_id: base.property_type_id,
+      title: base.title,
+      description: base.description,
+      guests: base.guests,
+      bedrooms: base.bedrooms,
+      beds: base.beds,
+      bathrooms: base.bathrooms,
+    },
+  });
+
+  function onSubmit(data: CreatePropertyInput) {
+    console.log(data);
+    submit(data, { method: "post" });
+  }
 
   return (
     <div className="container mx-auto px-4 lg:px-20 py-12">
@@ -287,52 +277,67 @@ export default function BasicInfoStep() {
         Tell us about your property so guests can find it easily
       </p>
 
-      <form>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        id="basic-property-form"
+        className="mb-10"
+      >
         <FieldGroup>
           <Field>
             <FieldLabel>What type of property is this?</FieldLabel>
-            <RadioGroup
-              value={selectedType}
-              onValueChange={setSelectedType}
-              className="grid grid-cols-2 md:grid-cols-3 gap-4"
-            >
-              {propertyTypeSlice.map(({ id, key, type, description }) => {
-                const Icon =
-                  propertyTypeIcons[
-                    key.toLowerCase() as keyof typeof propertyTypeIcons
-                  ] || Hotel;
+            <Controller
+              name="property_type_id"
+              control={control}
+              render={({ field }) => (
+                <PropertyTypeList
+                  items={propertyTypeSlice}
+                  selectedType={field.value}
+                  onChange={field.onChange}
+                  className="grid grid-cols-2 md:grid-cols-3 gap-4"
+                />
+              )}
+            />
 
-                return (
-                  <FieldLabel
-                    htmlFor={id}
-                    key={id}
-                    className={`transition ${
-                      selectedType === id ? "bg-muted" : "bg-white"
-                    }`}
-                  >
-                    <Field
-                      orientation="horizontal"
-                      style={{ alignItems: "center" }}
-                    >
-                      <Icon className="w-5 h-5 text-muted-foreground" />
-                      <FieldContent className="gap-0">
-                        <FieldTitle className="font-semibold text-card-foreground">
-                          {type}
-                        </FieldTitle>
-                        <FieldDescription className="text-xs text-muted-foreground">
-                          {description}
-                        </FieldDescription>
-                      </FieldContent>
-                      <RadioGroupItem
-                        value={id}
-                        id={id}
-                        className="border-border bg-background"
+            <div className="flex justify-end">
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button type="button" variant="link" size="sm">
+                    See more
+                  </Button>
+                </DialogTrigger>
+
+                <DialogContent className="max-h-[85vh] w-full max-w-lg flex flex-col">
+                  <DialogHeader>
+                    <DialogTitle>Property Types</DialogTitle>
+                    <DialogDescription>
+                      This is a dialog with scrollable content.
+                    </DialogDescription>
+                  </DialogHeader>
+
+                  <Controller
+                    name="property_type_id"
+                    control={control}
+                    render={({ field }) => (
+                      <PropertyTypeList
+                        items={propertyTypes}
+                        selectedType={field.value}
+                        onChange={field.onChange}
+                        className="flex-1 overflow-y-auto pr-2 space-y-2"
                       />
-                    </Field>
-                  </FieldLabel>
-                );
-              })}
-            </RadioGroup>
+                    )}
+                  />
+
+                  <DialogFooter>
+                    <DialogClose asChild>
+                      <Button variant="outline">Close</Button>
+                    </DialogClose>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </div>
+            {errors.property_type_id && (
+              <FieldError>{errors.property_type_id.message}</FieldError>
+            )}
           </Field>
 
           {/* title */}
@@ -341,9 +346,11 @@ export default function BasicInfoStep() {
             <Input
               placeholder="e.g., Cozy beachfront apartment with ocean views"
               id="title"
-              className="border-border"
+              className="border-border bg-white"
+              {...register("title")}
             />
             <FieldDescription>0/100 characters</FieldDescription>
+            {errors.title && <FieldError>{errors.title.message}</FieldError>}
           </Field>
 
           {/* description */}
@@ -352,14 +359,77 @@ export default function BasicInfoStep() {
             <Textarea
               placeholder="Describe what makes your property special. Include details about the space, nearby attractions, and what guests can expect..."
               id="description"
-              className="border-border"
+              className="border-border bg-white"
+              {...register("description")}
             />
-            <FieldDescription>
-              0/500 characters • Be descriptive and highlight unique features
-            </FieldDescription>
+            {errors.description && (
+              <FieldError>{errors.description.message}</FieldError>
+            )}
+          </Field>
+
+          {/* guests */}
+          <Field>
+            <FieldLabel htmlFor="guests">Guests</FieldLabel>
+            <Input
+              type="number"
+              placeholder="0"
+              id="guests"
+              className="border-border bg-white"
+              {...register("guests", { valueAsNumber: true })}
+            />
+            {errors.guests && <FieldError>{errors.guests.message}</FieldError>}
+          </Field>
+
+          {/* bedrooms */}
+          <Field>
+            <FieldLabel htmlFor="bedrooms">Bedrooms</FieldLabel>
+            <Input
+              type="number"
+              placeholder="0"
+              id="bedrooms"
+              className="border-border bg-white"
+              {...register("bedrooms", { valueAsNumber: true })}
+            />
+            {errors.bedrooms && (
+              <FieldError>{errors.bedrooms.message}</FieldError>
+            )}
+          </Field>
+
+          {/* beds */}
+          <Field>
+            <FieldLabel htmlFor="beds">Beds</FieldLabel>
+            <Input
+              type="number"
+              placeholder="0"
+              id="beds"
+              className="border-border bg-white"
+              {...register("beds", { valueAsNumber: true })}
+            />
+            {errors.beds && <FieldError>{errors.beds.message}</FieldError>}
+          </Field>
+
+          {/* bathrooms */}
+          <Field>
+            <FieldLabel htmlFor="bathrooms">Bathrooms</FieldLabel>
+            <Input
+              type="number"
+              placeholder="0"
+              id="bathrooms"
+              className="border-border bg-white"
+              {...register("bathrooms", { valueAsNumber: true })}
+            />
+            {errors.bathrooms && (
+              <FieldError>{errors.bathrooms.message}</FieldError>
+            )}
           </Field>
         </FieldGroup>
       </form>
+
+      <StepNavigation
+        onNext={() => {}}
+        typeAction="basic-property-form"
+        isSubmitting={isSubmitting}
+      />
     </div>
   );
 }
