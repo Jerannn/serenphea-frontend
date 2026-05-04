@@ -7,6 +7,7 @@ import BasicInfoStep from "./steps/BasicInfoStep";
 import LocationStep from "./steps/LocationStep";
 import AmenitiesStep from "./steps/AmenitiesStep";
 import PhotosStep from "./steps/PhotosStep";
+import { Outlet } from "react-router-dom";
 
 const initialSteps = [
   {
@@ -63,13 +64,10 @@ export default function AddPropertyStepper() {
       </div>
 
       <div className="flex-1">
-        {step === 0 && <BasicInfoStep />}
-        {step === 1 && <LocationStep />}
-        {step === 2 && <AmenitiesStep />}
-        {step === 3 && <PhotosStep />}
+        <Outlet />
       </div>
 
-      <StepNavigation
+      {/* <StepNavigation
         step={step}
         totalSteps={steps.length}
         onNext={() =>
@@ -79,7 +77,7 @@ export default function AddPropertyStepper() {
           })
         }
         onBack={() => setStep((s) => s - 1)}
-      />
+      /> */}
     </div>
   );
 }
