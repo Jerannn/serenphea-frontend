@@ -2,7 +2,6 @@ import { useState } from "react";
 import EmptyProperty from "./EmptyProperty";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Property from "./Property";
-import { toast } from "sonner";
 
 interface Property {
   id: string;
@@ -106,38 +105,13 @@ const mockProperties: Property[] = [
 ];
 
 export default function PropertiesTabs() {
-  const [properties, setProperties] = useState<Property[]>(mockProperties);
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [propertyToDelete, setPropertyToDelete] = useState<string | null>(null);
+  const [properties] = useState<Property[]>(mockProperties);
   const [filter, setFilter] = useState<"all" | "published" | "archived">("all");
 
   const filteredProperties = properties.filter((property) => {
     if (filter === "all") return true;
     return property.status === filter;
   });
-
-  const handleDelete = () => {
-    if (propertyToDelete) {
-      setProperties(properties.filter((p) => p.id !== propertyToDelete));
-      toast.success("Property deleted successfully");
-      setDeleteDialogOpen(false);
-      setPropertyToDelete(null);
-    }
-  };
-
-  const handleToggleStatus = (id: string) => {
-    setProperties(
-      properties.map((p) =>
-        p.id === id
-          ? {
-              ...p,
-              status: p.status === "published" ? "archived" : "published",
-            }
-          : p,
-      ),
-    );
-    toast.success("Property status updated");
-  };
 
   return (
     <Tabs value={filter} onValueChange={(value: any) => setFilter(value)}>

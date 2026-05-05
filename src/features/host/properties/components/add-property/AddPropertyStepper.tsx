@@ -1,12 +1,7 @@
 import { useState } from "react";
 import StepperHeader from "./StepperHeader";
-import StepNavigation from "./StepNavigation";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import BasicInfoStep from "./steps/BasicInfoStep";
-import LocationStep from "./steps/LocationStep";
-import AmenitiesStep from "./steps/AmenitiesStep";
-import PhotosStep from "./steps/PhotosStep";
 import { Outlet } from "react-router-dom";
 
 const initialSteps = [
@@ -45,8 +40,8 @@ const initialSteps = [
 ];
 
 export default function AddPropertyStepper() {
-  const [steps, setSteps] = useState(initialSteps);
-  const [step, setStep] = useState(0);
+  const [steps] = useState(initialSteps);
+  const [step] = useState(0);
 
   return (
     <div className="w-full min-h-screen flex flex-col">

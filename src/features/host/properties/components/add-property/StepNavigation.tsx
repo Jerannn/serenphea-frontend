@@ -1,15 +1,14 @@
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, CheckCircle2, Loader2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 
 type StepNavigationProps = {
   typeAction: string;
-  onNext: () => void;
+  onNext?: () => void;
   isSubmitting?: boolean;
 };
 
 export default function StepNavigation({
   typeAction,
-  onNext,
   isSubmitting,
 }: StepNavigationProps) {
   return (

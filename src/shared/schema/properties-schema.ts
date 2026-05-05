@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const createPropertySchema = z.object({
-  property_type_id: z.string().min(1, {
+  propertyTypeId: z.string().min(1, {
     message: "Please select a property type",
   }),
   title: z.string().min(1, { message: "Please enter a property title" }),
