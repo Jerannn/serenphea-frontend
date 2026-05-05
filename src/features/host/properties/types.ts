@@ -56,7 +56,7 @@ export interface PropertyPricing {
   id: string;
   propertyId: string;
 
-  base_price: number;
+  basePrice: number;
   cleaningFee: number;
   weeklyDiscount: number;
   monthlyDiscount: number;
@@ -75,11 +75,11 @@ export interface PropertyBookingSettings {
   propertyId: string;
 
   instantBook: boolean;
-  check_inTime: string; // "HH:mm"
-  check_outTime: string;
+  checkInTime: string; // "HH:mm"
+  checkOutTime: string;
 
-  min_nights: number;
-  max_nights: number;
+  minNights: number;
+  maxNights: number;
 }
 
 export interface PropertyType {
@@ -88,3 +88,8 @@ export interface PropertyType {
   type: string;
   description: string;
 }
+
+export type NextCursor = {
+  createdAt: string | Date;
+  id: string;
+} | null;

@@ -26,7 +26,7 @@ export default function EmptyProperty() {
       <EmptyContent>
         <Button variant="outline">
           <Plus />
-          <Link to="/host/properties/new">Add your first property</Link>
+          <Link to="/host/properties/new/basics">Add your first property</Link>
         </Button>
       </EmptyContent>
     </Empty>
