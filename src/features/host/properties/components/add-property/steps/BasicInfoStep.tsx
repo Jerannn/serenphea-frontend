@@ -134,6 +134,7 @@ export default function BasicInfoStep() {
             <Input
               placeholder="e.g., Cozy beachfront apartment with ocean views"
               id="title"
+              type="text"
               className="border-border bg-white"
               {...register("title")}
             />
