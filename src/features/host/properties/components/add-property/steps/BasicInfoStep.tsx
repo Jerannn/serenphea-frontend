@@ -18,231 +18,21 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useState } from "react";
 import PropertyTypeList from "../PropertyTypeList";
-import type { CreatePropertyInput } from "../../../types";
+import type { CreatePropertyInput, PropertyType } from "../../../types";
 import { Controller, useForm } from "react-hook-form";
 import { createPropertySchema } from "@/shared/schema/properties-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import StepNavigation from "../StepNavigation";
-import { useNavigation, useSubmit } from "react-router-dom";
+import { useLoaderData, useNavigation, useSubmit } from "react-router-dom";
 import { usePropertyStore } from "../../../store/PropertyStore";
-import { is } from "date-fns/locale";
-
-const initialPropertyTypes = [
-  // 🏠 Residential
-  {
-    id: "03769940-8db1-4da2-9202-d44b1c9dd909",
-    key: "house",
-    type: "House",
-    description: "A standalone residential home",
-  },
-  {
-    id: "11111111-1111-1111-1111-111111111112",
-    key: "apartment",
-    type: "Apartment",
-    description: "A private unit within a building",
-  },
-  {
-    id: "11111111-1111-1111-1111-111111111113",
-    key: "condo",
-    type: "Condominium",
-    description: "A privately owned unit in a complex",
-  },
-  {
-    id: "11111111-1111-1111-1111-111111111114",
-    key: "townhouse",
-    type: "Townhouse",
-    description: "A multi-floor home sharing walls with others",
-  },
-  {
-    id: "11111111-1111-1111-1111-111111111115",
-    key: "duplex",
-    type: "Duplex",
-    description: "A building divided into two separate homes",
-  },
-
-  // 🏝️ Vacation & Luxury
-  {
-    id: "22222222-2222-2222-2222-222222222221",
-    key: "villa",
-    type: "Villa",
-    description: "A luxury residence, often with outdoor space",
-  },
-  {
-    id: "22222222-2222-2222-2222-222222222222",
-    key: "cabin",
-    type: "Cabin",
-    description: "A rustic retreat, usually in nature",
-  },
-  {
-    id: "22222222-2222-2222-2222-222222222223",
-    key: "cottage",
-    type: "Cottage",
-    description: "A small, cozy countryside home",
-  },
-  {
-    id: "22222222-2222-2222-2222-222222222224",
-    key: "bungalow",
-    type: "Bungalow",
-    description: "A single-story house, often with a veranda",
-  },
-  {
-    id: "22222222-2222-2222-2222-222222222225",
-    key: "chalet",
-    type: "Chalet",
-    description: "A wooden mountain home, often near ski resorts",
-  },
-  {
-    id: "22222222-2222-2222-2222-222222222226",
-    key: "beach_house",
-    type: "Beach House",
-    description: "A home located near the beach",
-  },
-
-  // 🏨 Hospitality
-  {
-    id: "33333333-3333-3333-3333-333333333331",
-    key: "hotel",
-    type: "Hotel",
-    description: "A professionally managed lodging with rooms",
-  },
-  {
-    id: "33333333-3333-3333-3333-333333333332",
-    key: "boutique_hotel",
-    type: "Boutique Hotel",
-    description: "A small, stylish hotel with unique design",
-  },
-  {
-    id: "33333333-3333-3333-3333-333333333333",
-    key: "hostel",
-    type: "Hostel",
-    description: "Budget-friendly shared accommodations",
-  },
-  {
-    id: "33333333-3333-3333-3333-333333333334",
-    key: "guesthouse",
-    type: "Guesthouse",
-    description: "A small lodging, often owner-occupied",
-  },
-  {
-    id: "33333333-3333-3333-3333-333333333335",
-    key: "bed_and_breakfast",
-    type: "Bed & Breakfast",
-    description: "Accommodation with breakfast included",
-  },
-  {
-    id: "33333333-3333-3333-3333-333333333336",
-    key: "resort",
-    type: "Resort",
-    description: "A full-service property with amenities and activities",
-  },
-
-  // 🏙️ Unique Stays
-  {
-    id: "44444444-4444-4444-4444-444444444441",
-    key: "loft",
-    type: "Loft",
-    description: "An open-plan living space, often industrial-style",
-  },
-  {
-    id: "44444444-4444-4444-4444-444444444442",
-    key: "studio",
-    type: "Studio",
-    description: "A compact space combining living and sleeping areas",
-  },
-  {
-    id: "44444444-4444-4444-4444-444444444443",
-    key: "tiny_home",
-    type: "Tiny Home",
-    description: "A very small, minimalist house",
-  },
-  {
-    id: "44444444-4444-4444-4444-444444444444",
-    key: "treehouse",
-    type: "Treehouse",
-    description: "A structure built among trees",
-  },
-  {
-    id: "44444444-4444-4444-4444-444444444445",
-    key: "boat",
-    type: "Boat",
-    description: "A stay on a boat or houseboat",
-  },
-  {
-    id: "44444444-4444-4444-4444-444444444446",
-    key: "camper_rv",
-    type: "Camper / RV",
-    description: "A mobile home or recreational vehicle",
-  },
-  {
-    id: "44444444-4444-4444-4444-444444444447",
-    key: "dome",
-    type: "Dome",
-    description: "A rounded structure, often eco-friendly",
-  },
-  {
-    id: "44444444-4444-4444-4444-444444444448",
-    key: "farm_stay",
-    type: "Farm Stay",
-    description: "Accommodation on a working farm",
-  },
-
-  // 🏢 Shared Spaces
-  {
-    id: "55555555-5555-5555-5555-555555555551",
-    key: "private_room",
-    type: "Private Room",
-    description: "A private room within a shared property",
-  },
-  {
-    id: "55555555-5555-5555-5555-555555555552",
-    key: "shared_room",
-    type: "Shared Room",
-    description: "A shared sleeping space with others",
-  },
-
-  // 🏕️ Outdoor
-  {
-    id: "66666666-6666-6666-6666-666666666661",
-    key: "campground",
-    type: "Campground",
-    description: "An outdoor area for camping",
-  },
-  {
-    id: "66666666-6666-6666-6666-666666666662",
-    key: "glamping",
-    type: "Glamping",
-    description: "Luxury camping with amenities",
-  },
-  {
-    id: "66666666-6666-6666-6666-666666666663",
-    key: "tent",
-    type: "Tent",
-    description: "A simple outdoor shelter for camping",
-  },
-
-  // 🏢 Commercial / Extended Stay
-  {
-    id: "77777777-7777-7777-7777-777777777771",
-    key: "serviced_apartment",
-    type: "Serviced Apartment",
-    description: "Furnished apartment with hotel-like services",
-  },
-  {
-    id: "77777777-7777-7777-7777-777777777772",
-    key: "aparthotel",
-    type: "Aparthotel",
-    description: "A hybrid of apartment and hotel",
-  },
-];
 
 export default function BasicInfoStep() {
-  const [propertyTypes, setPropertyType] = useState(initialPropertyTypes);
-  const propertyTypeSlice = propertyTypes.slice(0, 6);
-  const base = usePropertyStore((state) => state.property.base);
+  const base = usePropertyStore((state) => state.property);
   const submit = useSubmit();
+  const propertyTypes = (useLoaderData() as PropertyType[]) || [];
   const navigation = useNavigation();
+  const propertyTypeSlice = propertyTypes.slice(0, 6);
   const isSubmitting = navigation.state === "submitting";
 
   const {
@@ -253,7 +43,7 @@ export default function BasicInfoStep() {
   } = useForm<CreatePropertyInput>({
     resolver: zodResolver(createPropertySchema),
     defaultValues: {
-      property_type_id: base.property_type_id,
+      propertyTypeId: base.propertyTypeId,
       title: base.title,
       description: base.description,
       guests: base.guests,
@@ -264,16 +54,15 @@ export default function BasicInfoStep() {
   });
 
   function onSubmit(data: CreatePropertyInput) {
-    console.log(data);
     submit(data, { method: "post" });
   }
 
   return (
-    <div className="container mx-auto px-4 lg:px-20 py-12">
-      <h1 className="text-3xl font-serif font-bold ">
-        Let's start with the basics
+    <div className="container mx-auto px-4 py-12 lg:px-20">
+      <h1 className="font-serif text-3xl font-bold">
+        Let&apos;s start with the basics
       </h1>
-      <p className="text-muted-foreground mb-8">
+      <p className="mb-8 text-muted-foreground">
         Tell us about your property so guests can find it easily
       </p>
 
@@ -286,14 +75,14 @@ export default function BasicInfoStep() {
           <Field>
             <FieldLabel>What type of property is this?</FieldLabel>
             <Controller
-              name="property_type_id"
+              name="propertyTypeId"
               control={control}
               render={({ field }) => (
                 <PropertyTypeList
                   items={propertyTypeSlice}
                   selectedType={field.value}
                   onChange={field.onChange}
-                  className="grid grid-cols-2 md:grid-cols-3 gap-4"
+                  className="grid grid-cols-2 gap-4 md:grid-cols-3"
                 />
               )}
             />
@@ -306,7 +95,7 @@ export default function BasicInfoStep() {
                   </Button>
                 </DialogTrigger>
 
-                <DialogContent className="max-h-[85vh] w-full max-w-lg flex flex-col">
+                <DialogContent className="flex max-h-[85vh] w-full max-w-lg flex-col">
                   <DialogHeader>
                     <DialogTitle>Property Types</DialogTitle>
                     <DialogDescription>
@@ -315,14 +104,14 @@ export default function BasicInfoStep() {
                   </DialogHeader>
 
                   <Controller
-                    name="property_type_id"
+                    name="propertyTypeId"
                     control={control}
                     render={({ field }) => (
                       <PropertyTypeList
                         items={propertyTypes}
                         selectedType={field.value}
                         onChange={field.onChange}
-                        className="flex-1 overflow-y-auto pr-2 space-y-2"
+                        className="flex-1 space-y-2 overflow-y-auto pr-2"
                       />
                     )}
                   />
@@ -335,12 +124,11 @@ export default function BasicInfoStep() {
                 </DialogContent>
               </Dialog>
             </div>
-            {errors.property_type_id && (
-              <FieldError>{errors.property_type_id.message}</FieldError>
+            {errors.propertyTypeId && (
+              <FieldError>{errors.propertyTypeId.message}</FieldError>
             )}
           </Field>
 
-          {/* title */}
           <Field>
             <FieldLabel htmlFor="title">Title</FieldLabel>
             <Input
@@ -353,7 +141,6 @@ export default function BasicInfoStep() {
             {errors.title && <FieldError>{errors.title.message}</FieldError>}
           </Field>
 
-          {/* description */}
           <Field>
             <FieldLabel htmlFor="description">Description</FieldLabel>
             <Textarea
@@ -367,7 +154,6 @@ export default function BasicInfoStep() {
             )}
           </Field>
 
-          {/* guests */}
           <Field>
             <FieldLabel htmlFor="guests">Guests</FieldLabel>
             <Input
@@ -380,7 +166,6 @@ export default function BasicInfoStep() {
             {errors.guests && <FieldError>{errors.guests.message}</FieldError>}
           </Field>
 
-          {/* bedrooms */}
           <Field>
             <FieldLabel htmlFor="bedrooms">Bedrooms</FieldLabel>
             <Input
@@ -395,7 +180,6 @@ export default function BasicInfoStep() {
             )}
           </Field>
 
-          {/* beds */}
           <Field>
             <FieldLabel htmlFor="beds">Beds</FieldLabel>
             <Input
@@ -408,7 +192,6 @@ export default function BasicInfoStep() {
             {errors.beds && <FieldError>{errors.beds.message}</FieldError>}
           </Field>
 
-          {/* bathrooms */}
           <Field>
             <FieldLabel htmlFor="bathrooms">Bathrooms</FieldLabel>
             <Input

@@ -10,7 +10,7 @@ export default async function action({ request }: ActionFunctionArgs) {
     method: "POST",
     body: JSON.stringify(data),
   });
-  console.log(response);
+
   if (response.status === "fail") {
     return response as ErrorResponse;
   }

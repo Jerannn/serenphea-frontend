@@ -4,6 +4,7 @@ import DashboardPage from "@/pages/host/DashboardPage";
 import PropertiesPage from "@/pages/host/PropertiesPage";
 import BasicInfoPage from "@/pages/host/add-property/BasicInfoPage";
 import BasicInfoAction from "@/features/host/properties/actions/basic-info-action";
+import BasicInfoLoader from "@/features/host/properties/loaders/basic-info-loader";
 
 const dashboardRoutes = {
   path: "/host",
@@ -29,6 +30,7 @@ const dashboardRoutes = {
           path: "basics",
           Component: BasicInfoPage,
           action: BasicInfoAction,
+          loader: BasicInfoLoader,
           handle: { title: "Basic Info" },
         },
       ],

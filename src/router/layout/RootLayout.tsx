@@ -1,11 +1,20 @@
 import Header from "@/components/Header";
-import { Outlet } from "react-router-dom";
+import NavigationProgress from "@/components/navigation/NavigationProgress";
+import { Outlet, useNavigation } from "react-router-dom";
 
 export default function RootLayout() {
+  const navigation = useNavigation();
+
   return (
-    <main className="min-h-screen flex flex-col">
+    <main
+      className="flex min-h-screen flex-col"
+      aria-busy={navigation.state === "loading"}
+    >
+      <NavigationProgress />
       <Header />
-      <Outlet />
+      <div className="relative flex-1">
+        <Outlet />
+      </div>
     </main>
   );
 }
