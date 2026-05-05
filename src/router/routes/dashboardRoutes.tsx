@@ -6,6 +6,7 @@ import BasicInfoPage from "@/pages/host/add-property/BasicInfoPage";
 import BasicInfoAction from "@/features/host/properties/actions/basic-info-action";
 import BasicInfoLoader from "@/features/host/properties/loaders/basic-info-loader";
 import PropertiesLoader from "@/features/host/properties/loaders/properties-loader";
+import LocationPage from "@/pages/host/add-property/LocationPage";
 
 const dashboardRoutes = {
   path: "/host",
@@ -34,6 +35,13 @@ const dashboardRoutes = {
           action: BasicInfoAction,
           loader: BasicInfoLoader,
           handle: { title: "Basic Info" },
+        },
+        {
+          path: "location",
+          Component: LocationPage,
+          // action: BasicInfoAction,
+          // loader: BasicInfoLoader,
+          handle: { title: "Location" },
         },
       ],
     },

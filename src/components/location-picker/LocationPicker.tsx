@@ -25,45 +25,7 @@ import {
 import { Country, State, City } from "country-state-city";
 import { MapPin, X } from "lucide-react";
 import { useMemo, useState } from "react";
-
-type Location = {
-  id: string;
-  name: string;
-  type: string;
-  latitude: number;
-  longitude: number;
-  countryCode: string;
-  stateCode?: string;
-};
-
-const ALL_LOCATIONS: Location[] = [
-  ...Country.getAllCountries().map((c) => ({
-    id: `country-${c.isoCode}`,
-    name: c.name,
-    type: "country",
-    latitude: Number(c.latitude),
-    longitude: Number(c.longitude),
-    countryCode: c.isoCode,
-  })),
-  ...State.getAllStates().map((s) => ({
-    id: `state-${s.countryCode}-${s.isoCode}`,
-    name: s.name,
-    type: "state/province",
-    latitude: Number(s.latitude),
-    longitude: Number(s.longitude),
-    countryCode: s.countryCode,
-    stateCode: s.isoCode,
-  })),
-  ...City.getAllCities().map((c) => ({
-    id: `city-${c.countryCode}-${c.stateCode ?? "na"}-${c.name}`,
-    name: c.name,
-    type: "city",
-    latitude: Number(c.latitude),
-    longitude: Number(c.longitude),
-    countryCode: c.countryCode,
-    stateCode: c.stateCode,
-  })),
-];
+import { Button } from "../ui/button";
 
 const defaultLocation = {
   id: "",
@@ -75,23 +37,18 @@ const defaultLocation = {
   countryCode: "",
 };
 
-export default function LocationInput() {
+export default function LocationPicker() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const [location, setLocation] = useState<Location>(defaultLocation);
+  const [location, setLocation] = useState<Location>();
 
-  const filtered = useMemo(() => {
-    if (!query) return ALL_LOCATIONS.slice(0, 10);
-
-    return ALL_LOCATIONS.filter((item) =>
-      item.name.toLowerCase().includes(query.toLowerCase()),
-    ).slice(0, 20);
-  }, [query]);
+  const [countries, setCountries] = useState(Country.getAllCountries());
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Field className="max-w-sm">
+        <Button variant="outline">Add Location</Button>
+        {/* <Field className="max-w-sm">
           <FieldLabel htmlFor="inline-start-input">Location</FieldLabel>
           <InputGroup className="max-w-xs h-12 bg-primary-foreground border-border">
             <InputGroupInput
@@ -115,7 +72,7 @@ export default function LocationInput() {
               </InputGroupAddon>
             )}
           </InputGroup>
-        </Field>
+        </Field> */}
       </PopoverTrigger>
 
       <PopoverContent className=" w-full mt-3">
@@ -125,6 +82,7 @@ export default function LocationInput() {
             Enter a location to find stays, experiences, and nearby listings.
           </PopoverDescription>
         </PopoverHeader>
+
         <Command shouldFilter={false}>
           <CommandInput
             placeholder="Search destinations"
@@ -132,12 +90,12 @@ export default function LocationInput() {
             onValueChange={setQuery}
           />
 
-          <CommandList>
-            {filtered.length === 0 ? (
+          {/* <CommandList>
+            {countries.length === 0 ? (
               <CommandEmpty>No results found.</CommandEmpty>
             ) : (
               <CommandGroup heading="Suggestions">
-                {filtered.map((item) => (
+                {countries.map((item) => (
                   <CommandItem
                     key={item.id}
                     value={item.id}
@@ -166,7 +124,7 @@ export default function LocationInput() {
                 ))}
               </CommandGroup>
             )}
-          </CommandList>
+          </CommandList> */}
         </Command>
       </PopoverContent>
     </Popover>
