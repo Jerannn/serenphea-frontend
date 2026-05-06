@@ -1,11 +1,14 @@
 import { create } from "zustand";
-import type { CreatePropertyInput, PropertyWithRelations } from "../types";
+import type {
+  CreatePropertyInput,
+  PropertyLocation,
+  PropertyWithRelations,
+} from "../types";
 
 type PropertyState = {
   property: PropertyWithRelations;
-
   setBaseProperty: (data: CreatePropertyInput) => void;
-  // reset: () => void;
+  setLocation: (data: PropertyLocation) => void;
 };
 
 export const usePropertyStore = create<PropertyState>((set) => ({
@@ -20,15 +23,15 @@ export const usePropertyStore = create<PropertyState>((set) => ({
     beds: 0,
     bathrooms: 0,
     status: "draft",
-    createdAt: "",
-    updatedAt: "",
+    rules: null,
     location: null,
     pricing: null,
     availability: null,
     bookingSettings: null,
     images: [],
     amenities: [],
-    rules: null,
+    createdAt: "",
+    updatedAt: "",
   },
 
   setBaseProperty: (data) =>
@@ -39,8 +42,11 @@ export const usePropertyStore = create<PropertyState>((set) => ({
       },
     })),
 
-  //   reset: () =>
-  //     set(() => ({
-  //       property: initialProperty,
-  //     })),
+  setLocation: (data) =>
+    set((state) => ({
+      property: {
+        ...state.property,
+        location: data,
+      },
+    })),
 }));

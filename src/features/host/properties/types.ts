@@ -35,12 +35,11 @@ export type PropertyWithRelations = Property & {
 export interface PropertyLocation {
   id: string;
   propertyId: string;
-
-  address: string;
+  street: string;
   city: string;
-  state: string;
+  region: string;
   country: string;
-
+  postcode: string;
   latitude: number;
   longitude: number;
 }
