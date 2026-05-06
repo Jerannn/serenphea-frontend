@@ -6,7 +6,12 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Outlet, useMatches, useNavigation, type UIMatch } from "react-router-dom";
+import {
+  Outlet,
+  useMatches,
+  useNavigation,
+  type UIMatch,
+} from "react-router-dom";
 
 type RouteHandle = {
   title?: string;
