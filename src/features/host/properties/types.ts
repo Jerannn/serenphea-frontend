@@ -1,4 +1,7 @@
-import type { createPropertySchema } from "@/shared/schema/properties-schema";
+import type {
+  amenitySchema,
+  createPropertySchema,
+} from "@/shared/schema/properties-schema";
 import type { z } from "zod";
 
 export type PropertyTypes = {
@@ -9,6 +12,7 @@ export type PropertyTypes = {
 };
 
 export type CreatePropertyInput = z.infer<typeof createPropertySchema>;
+export type AmenityInput = z.infer<typeof amenitySchema>;
 
 export type Property = CreatePropertyInput & {
   id: string;
@@ -29,7 +33,7 @@ export type PropertyWithRelations = Property & {
   bookingSettings: PropertyBookingSettings | null;
 
   images: PropertyImage[];
-  amenities: string[];
+  amenities: Amenity[];
 };
 
 export interface PropertyLocation {
@@ -86,6 +90,13 @@ export interface PropertyType {
   key: string;
   type: string;
   description: string;
+}
+
+export interface Amenity {
+  id: string;
+  name: string;
+  key: string;
+  category: string;
 }
 
 export type NextCursor = {

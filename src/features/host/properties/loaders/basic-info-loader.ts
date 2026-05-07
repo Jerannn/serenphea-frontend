@@ -1,7 +1,7 @@
 import { api } from "@/lib/api";
 import type { PropertyType } from "../types";
 
-export default async function basicInfoLoader(): Promise<PropertyType[]> {
+export default async function loader(): Promise<PropertyType[]> {
   const response = await api(`/properties/types`);
 
   if (response.status === "fail") {

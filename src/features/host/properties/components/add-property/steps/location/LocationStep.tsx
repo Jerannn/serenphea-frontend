@@ -11,8 +11,8 @@ import {
   structuredToEditableLines,
   type PlaceResult,
 } from "@/features/host/properties/lib/nominatim";
-import Map, { type LatLng } from "../../Map";
-import StepNavigation from "../StepNavigation";
+import Map, { type LatLng } from "../../../Map";
+import StepNavigation from "../../StepNavigation";
 
 import { useLocationForm } from "@/features/host/properties/hooks/useLocationForm";
 import { usePlaceSearch } from "@/features/host/properties/hooks/usePlaceSearch";
@@ -211,7 +211,7 @@ export default function LocationStep() {
 
   const mapCenter = markerPosition ?? MAP_CONFIG.defaultCenter;
   const mapZoom = markerPosition ? MAP_CONFIG.zoomPin : MAP_CONFIG.zoomWorld;
-  console.log(errors);
+
   return (
     <div className="container mx-auto px-4 py-12 lg:px-20">
       <h1 className="font-serif text-3xl font-bold">
