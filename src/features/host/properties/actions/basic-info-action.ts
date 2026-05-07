@@ -19,7 +19,5 @@ export default async function action({ request }: ActionFunctionArgs) {
   const setProperty = usePropertyStore.getState().setBaseProperty;
   setProperty(response.data.property);
 
-  window.scrollTo({ top: 0 });
-
   return redirect(`/host/properties/${response.data.property.id}/location`);
 }

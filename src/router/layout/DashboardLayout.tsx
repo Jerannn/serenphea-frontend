@@ -6,6 +6,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import { useEffect } from "react";
 import {
   Outlet,
   useMatches,
@@ -22,6 +23,10 @@ export default function DashboardLayout() {
   const matches = useMatches() as UIMatch<unknown, RouteHandle>[];
   const current = matches.at(-1);
   const title = current?.handle?.title || "Dashboard";
+
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+  }, [title]);
 
   return (
     <SidebarProvider>

@@ -32,3 +32,7 @@ export const locationSchema = z.object({
     .min(-180)
     .max(180),
 });
+
+export const amenitySchema = z.object({
+  amenityIds: z.array(z.uuid()).min(1, "Please select at least one amenity"),
+});

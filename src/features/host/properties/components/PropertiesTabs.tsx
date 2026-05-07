@@ -6,7 +6,9 @@ import { useLoaderData } from "react-router-dom";
 
 export default function PropertiesTabs() {
   const { meta, properties } = useLoaderData();
-  const [filter, setFilter] = useState<"all" | "published" | "archived">("all");
+  const [filter, setFilter] = useState<
+    "all" | "published" | "archived" | "draft"
+  >("all");
 
   const filteredProperties = properties.filter((property) => {
     if (filter === "all") return true;
@@ -23,6 +25,9 @@ export default function PropertiesTabs() {
         </TabsTrigger>
         <TabsTrigger value="archived">
           Archived ({properties.filter((p) => p.status === "archived").length})
+        </TabsTrigger>
+        <TabsTrigger value="draft">
+          Archived ({properties.filter((p) => p.status === "draft").length})
         </TabsTrigger>
       </TabsList>
 

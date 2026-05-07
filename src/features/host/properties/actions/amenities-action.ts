@@ -4,11 +4,10 @@ import { usePropertyStore } from "../store/PropertyStore";
 import type { ErrorResponse } from "@/shared/types/response-types";
 
 export default async function action({ request, params }: ActionFunctionArgs) {
-  const formData = await request.formData();
-  const data = Object.fromEntries(formData);
+  const data = await request.json();
   const propertyId = params.id;
 
-  const response = await api(`/properties/${propertyId}/location`, {
+  const response = await api(`/properties/${propertyId}/amenities`, {
     method: "PUT",
     body: JSON.stringify(data),
   });
@@ -17,8 +16,8 @@ export default async function action({ request, params }: ActionFunctionArgs) {
     return response as ErrorResponse;
   }
 
-  const setLocation = usePropertyStore.getState().setLocation;
-  setLocation(response.data.location);
+  const setAmenities = usePropertyStore.getState().setAmenities;
+  setAmenities(response.data.amenities);
 
-  return redirect(`/host/properties/${propertyId}/amenities`);
+  return redirect(`/host/properties/${propertyId}/photos`);
 }

@@ -18,14 +18,14 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import PropertyTypeList from "../PropertyTypeList";
-import type { CreatePropertyInput, PropertyType } from "../../../types";
+import PropertyTypeList from "../../PropertyTypeList";
+import type { CreatePropertyInput, PropertyType } from "../../../../types";
 import { Controller, useForm } from "react-hook-form";
 import { createPropertySchema } from "@/shared/schema/properties-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import StepNavigation from "../StepNavigation";
+import StepNavigation from "../../StepNavigation";
 import { useLoaderData, useNavigation, useSubmit } from "react-router-dom";
-import { usePropertyStore } from "../../../store/PropertyStore";
+import { usePropertyStore } from "../../../../store/PropertyStore";
 
 export default function BasicInfoStep() {
   const base = usePropertyStore((state) => state.property);

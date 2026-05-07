@@ -30,6 +30,7 @@ const DEFAULT_PROPERTY_IMAGE =
   "https://placehold.co/800x500?text=No+Image+Available";
 
 export default function Property({ properties }: PropertyProps) {
+  console.log(properties);
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {properties.map((property) => {
@@ -62,7 +63,10 @@ export default function Property({ properties }: PropertyProps) {
         const imageUrl = coverImage?.url?.trim() || DEFAULT_PROPERTY_IMAGE;
 
         return (
-          <Card key={property.id} className="overflow-hidden pt-0 max-w-96">
+          <Card
+            key={property.id}
+            className="overflow-hidden pt-0 max-w-96 w-full"
+          >
             <div className="relative">
               <img
                 src={imageUrl}

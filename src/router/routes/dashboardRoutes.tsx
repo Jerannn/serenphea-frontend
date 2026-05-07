@@ -1,13 +1,20 @@
-import AddPropertyPage from "@/pages/host/add-property/AddPropertyPage";
 import DashboardLayout from "../layout/DashboardLayout";
+import AddPropertyPage from "@/pages/host/add-property/AddPropertyPage";
 import DashboardPage from "@/pages/host/DashboardPage";
 import PropertiesPage from "@/pages/host/PropertiesPage";
 import BasicInfoPage from "@/pages/host/add-property/BasicInfoPage";
-import BasicInfoAction from "@/features/host/properties/actions/basic-info-action";
-import LocationAction from "@/features/host/properties/actions/location-action";
-import BasicInfoLoader from "@/features/host/properties/loaders/basic-info-loader";
-import PropertiesLoader from "@/features/host/properties/loaders/properties-loader";
 import LocationPage from "@/pages/host/add-property/LocationPage";
+import UpdatePropertyPage from "@/pages/host/add-property/UpdatePropertyPage";
+import AmenitiesPage from "@/pages/host/add-property/AmenitiesPage";
+
+import basicInfoAction from "@/features/host/properties/actions/basic-info-action";
+import locationAction from "@/features/host/properties/actions/location-action";
+import amenitiesAction from "@/features/host/properties/actions/amenities-action";
+
+import basicInfoLoader from "@/features/host/properties/loaders/basic-info-loader";
+import propertiesLoader from "@/features/host/properties/loaders/properties-loader";
+import amenitiesLoader from "@/features/host/properties/loaders/amenities-loader";
+import PhotosPage from "@/pages/host/add-property/PhotosPage";
 
 const dashboardRoutes = {
   path: "/host",
@@ -21,13 +28,11 @@ const dashboardRoutes = {
     },
     {
       path: "properties",
-      // Component: AddPropertyPage,
-      // handle: { title: "New Property" },
       children: [
         {
           index: true,
           Component: PropertiesPage,
-          loader: PropertiesLoader,
+          loader: propertiesLoader,
           handle: { title: "Properties" },
         },
         {
@@ -37,22 +42,35 @@ const dashboardRoutes = {
             {
               path: "basics",
               Component: BasicInfoPage,
-              action: BasicInfoAction,
-              loader: BasicInfoLoader,
+              action: basicInfoAction,
+              loader: basicInfoLoader,
               handle: { title: "Basic Info" },
             },
           ],
         },
         {
           path: ":id",
-          Component: AddPropertyPage,
+          Component: UpdatePropertyPage,
           children: [
             {
               path: "location",
               Component: LocationPage,
-              action: LocationAction,
-              // loader: BasicInfoLoader,
+              action: locationAction,
               handle: { title: "Location" },
+            },
+            {
+              path: "amenities",
+              Component: AmenitiesPage,
+              action: amenitiesAction,
+              loader: amenitiesLoader,
+              handle: { title: "Amenities" },
+            },
+            {
+              path: "photos",
+              Component: PhotosPage,
+              // action: amenitiesAction,
+              // loader: amenitiesLoader,
+              handle: { title: "Photos" },
             },
           ],
         },

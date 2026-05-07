@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import type {
+  Amenity,
   CreatePropertyInput,
   PropertyLocation,
   PropertyWithRelations,
@@ -9,6 +10,7 @@ type PropertyState = {
   property: PropertyWithRelations;
   setBaseProperty: (data: CreatePropertyInput) => void;
   setLocation: (data: PropertyLocation) => void;
+  setAmenities: (data: Amenity[]) => void;
 };
 
 export const usePropertyStore = create<PropertyState>((set) => ({
@@ -47,6 +49,14 @@ export const usePropertyStore = create<PropertyState>((set) => ({
       property: {
         ...state.property,
         location: data,
+      },
+    })),
+
+  setAmenities: (data) =>
+    set((state) => ({
+      property: {
+        ...state.property,
+        amenities: data,
       },
     })),
 }));
