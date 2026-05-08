@@ -1,23 +1,12 @@
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { Check } from "lucide-react";
+import { usePropertyStore } from "../../store/PropertyStore";
 
-type Step = {
-  id: number;
-  title: string;
-  description: string;
-  isCompleted: boolean;
-};
+export default function StepperHeader() {
+  const steps = usePropertyStore((state) => state.steps);
+  const currentStep = usePropertyStore((state) => state.currentStep);
 
-type StepperHeaderProps = {
-  steps: Step[];
-  currentStep: number;
-};
-
-export default function StepperHeader({
-  steps,
-  currentStep,
-}: StepperHeaderProps) {
   return (
     <div className="w-full px-2 sm:px-8">
       <div className="relative flex items-center justify-between w-full">

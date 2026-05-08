@@ -12,7 +12,6 @@ import {
   type PlaceResult,
 } from "@/features/host/properties/lib/nominatim";
 import Map, { type LatLng } from "../../../Map";
-import StepNavigation from "../../StepNavigation";
 
 import { useLocationForm } from "@/features/host/properties/hooks/useLocationForm";
 import { usePlaceSearch } from "@/features/host/properties/hooks/usePlaceSearch";
@@ -39,7 +38,7 @@ export default function LocationStep() {
     reset,
     setValue,
     watch,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = form;
 
   const {
@@ -224,7 +223,6 @@ export default function LocationStep() {
 
       <form
         id="location-property-form"
-        className="mb-10"
         onSubmit={handleSubmit((data) => submit(data, { method: "put" }))}
       >
         <input
@@ -323,12 +321,6 @@ export default function LocationStep() {
           .
         </p>
       </form>
-
-      <StepNavigation
-        onNext={() => {}}
-        typeAction="location-property-form"
-        isSubmitting={isSubmitting}
-      />
     </div>
   );
 }

@@ -23,17 +23,14 @@ import type { CreatePropertyInput, PropertyType } from "../../../../types";
 import { Controller, useForm } from "react-hook-form";
 import { createPropertySchema } from "@/shared/schema/properties-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import StepNavigation from "../../StepNavigation";
-import { useLoaderData, useNavigation, useSubmit } from "react-router-dom";
+import { useLoaderData, useSubmit } from "react-router-dom";
 import { usePropertyStore } from "../../../../store/PropertyStore";
 
 export default function BasicInfoStep() {
   const base = usePropertyStore((state) => state.property);
   const submit = useSubmit();
   const propertyTypes = (useLoaderData() as PropertyType[]) || [];
-  const navigation = useNavigation();
   const propertyTypeSlice = propertyTypes.slice(0, 6);
-  const isSubmitting = navigation.state === "submitting";
 
   const {
     control,
@@ -66,11 +63,7 @@ export default function BasicInfoStep() {
         Tell us about your property so guests can find it easily
       </p>
 
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        id="basic-property-form"
-        className="mb-10"
-      >
+      <form onSubmit={handleSubmit(onSubmit)} id="basics-property-form">
         <FieldGroup>
           <Field>
             <FieldLabel>What type of property is this?</FieldLabel>
@@ -208,12 +201,6 @@ export default function BasicInfoStep() {
           </Field>
         </FieldGroup>
       </form>
-
-      <StepNavigation
-        onNext={() => {}}
-        typeAction="basic-property-form"
-        isSubmitting={isSubmitting}
-      />
     </div>
   );
 }

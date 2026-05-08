@@ -6,7 +6,7 @@ export default function NavigationProgress() {
 
   return (
     <div
-      className="pointer-events-none fixed top-0 right-0 left-0 z-100 h-1 overflow-hidden bg-border/40"
+      className="absolute top-0 left-0 right-0 z-100 h-1 overflow-hidden bg-transparent"
       role="progressbar"
       aria-hidden={!active}
       aria-valuetext={active ? "Loading page" : undefined}

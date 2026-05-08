@@ -1,47 +1,25 @@
-import { useState } from "react";
 import StepperHeader from "./StepperHeader";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import { Outlet } from "react-router-dom";
-
-const initialSteps = [
-  {
-    id: 1,
-    title: "Basics",
-    description: "Property details",
-    isCompleted: false,
-  },
-  { id: 2, title: "Location", description: "Where is it?", isCompleted: false },
-  {
-    id: 3,
-    title: "Amenities",
-    description: "What you offer",
-    isCompleted: false,
-  },
-  {
-    id: 4,
-    title: "Photos",
-    description: "Showcase your space",
-    isCompleted: false,
-  },
-  {
-    id: 5,
-    title: "Pricing",
-    description: "Set your rates",
-    isCompleted: false,
-  },
-  {
-    id: 6,
-    title: "Settings",
-    description: "Booking rules",
-    isCompleted: false,
-  },
-  { id: 7, title: "Review", description: "Final check", isCompleted: false },
-];
+import { Outlet, useLocation, useNavigation } from "react-router-dom";
+import StepNavigation from "./StepNavigation";
+import { usePropertyStore } from "../../store/PropertyStore";
+import { useEffect } from "react";
 
 export default function AddPropertyStepper() {
-  const [steps] = useState(initialSteps);
-  const [step] = useState(0);
+  const location = useLocation();
+  const navigation = useNavigation();
+
+  const steps = usePropertyStore((state) => state.steps);
+  const currentStep = usePropertyStore((state) => state.currentStep);
+  const setPath = usePropertyStore((state) => state.setPath);
+  const currentAction = `${steps[currentStep].title.toLowerCase()}-property-form`;
+  const isSubmitting =
+    navigation.state === "submitting" || navigation.state === "loading";
+
+  useEffect(() => {
+    setPath(location.pathname);
+  }, [setPath, location.pathname]);
 
   return (
     <div className="w-full min-h-screen flex flex-col">
@@ -55,24 +33,14 @@ export default function AddPropertyStepper() {
           Back to properties
         </Button>
 
-        <StepperHeader steps={steps} currentStep={step} />
+        <StepperHeader />
       </div>
 
-      <div className="flex-1">
+      <div className="flex-1 overflow-hidden">
         <Outlet />
       </div>
 
-      {/* <StepNavigation
-        step={step}
-        totalSteps={steps.length}
-        onNext={() =>
-          setStep((s) => {
-            steps[s].isCompleted = true;
-            return s + 1;
-          })
-        }
-        onBack={() => setStep((s) => s - 1)}
-      /> */}
+      <StepNavigation typeAction={currentAction} isSubmitting={isSubmitting} />
     </div>
   );
 }
