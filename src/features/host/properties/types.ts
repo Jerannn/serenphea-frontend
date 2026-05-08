@@ -103,3 +103,10 @@ export type NextCursor = {
   createdAt: string | Date;
   id: string;
 } | null;
+
+export type Step = {
+  id: number;
+  title: string;
+  description: string;
+  isCompleted: boolean;
+};

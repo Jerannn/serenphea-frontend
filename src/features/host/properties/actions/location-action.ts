@@ -20,5 +20,8 @@ export default async function action({ request, params }: ActionFunctionArgs) {
   const setLocation = usePropertyStore.getState().setLocation;
   setLocation(response.data.location);
 
+  // move to next step
+  usePropertyStore.getState().nextStep();
+
   return redirect(`/host/properties/${propertyId}/amenities`);
 }

@@ -1,8 +1,7 @@
-import { useLoaderData, useNavigation, useSubmit } from "react-router-dom";
+import { useLoaderData, useSubmit } from "react-router-dom";
 import type { Amenity, AmenityInput } from "../../../../types";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import StepNavigation from "../../StepNavigation";
 import { toast } from "sonner";
 import { usePropertyStore } from "../../../../store/PropertyStore";
 import { Button } from "@/components/ui/button";
@@ -31,9 +30,7 @@ const CATEGORY_ORDER = [
 export default function AmenitiesStep() {
   const amenitiesList = useLoaderData<Amenity[]>();
   const submit = useSubmit();
-  const navigation = useNavigation();
   const amenities = usePropertyStore((state) => state.property.amenities);
-  const isSubmitting = navigation.state === "submitting";
 
   const {
     handleSubmit,
@@ -101,7 +98,7 @@ export default function AmenitiesStep() {
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} id="amenities-property-form">
-        <div className="space-y-6 mb-10">
+        <div className="space-y-6">
           {CATEGORY_ORDER.map((category) => {
             const amenitiesInCategory = amenitiesGrouped[category];
             return (
@@ -119,11 +116,6 @@ export default function AmenitiesStep() {
           })}
         </div>
       </form>
-      <StepNavigation
-        onNext={() => {}}
-        typeAction="amenities-property-form"
-        isSubmitting={isSubmitting}
-      />
     </div>
   );
 }

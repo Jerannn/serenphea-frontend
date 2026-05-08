@@ -19,5 +19,8 @@ export default async function action({ request, params }: ActionFunctionArgs) {
   const setAmenities = usePropertyStore.getState().setAmenities;
   setAmenities(response.data.amenities);
 
+  // move to next step
+  usePropertyStore.getState().nextStep();
+
   return redirect(`/host/properties/${propertyId}/photos`);
 }

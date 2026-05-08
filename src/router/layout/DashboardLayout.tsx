@@ -13,6 +13,7 @@ import {
   useNavigation,
   type UIMatch,
 } from "react-router-dom";
+import logo from "@/assets/logo.png";
 
 type RouteHandle = {
   title?: string;
@@ -23,6 +24,7 @@ export default function DashboardLayout() {
   const matches = useMatches() as UIMatch<unknown, RouteHandle>[];
   const current = matches.at(-1);
   const title = current?.handle?.title || "Dashboard";
+  const isLoading = navigation.state === "loading";
 
   useEffect(() => {
     window.scrollTo({ top: 0 });
@@ -42,7 +44,19 @@ export default function DashboardLayout() {
           className="relative min-h-[calc(100vh-3.5rem)]"
           aria-busy={navigation.state === "loading"}
         >
-          <Outlet />
+          {isLoading ? (
+            <div className="h-full w-full flex justify-center items-center">
+              <img
+                src={logo}
+                alt="Serenphea Logo's"
+                className="w-7 h-7 animate-spin"
+                loading="lazy"
+              />
+              <span className="ml-2 text-sm">Loading...</span>
+            </div>
+          ) : (
+            <Outlet />
+          )}
         </main>
       </SidebarInset>
     </SidebarProvider>
