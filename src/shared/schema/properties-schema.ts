@@ -1,3 +1,7 @@
+import {
+  ACCEPTED_IMAGE_TYPES,
+  MIN_IMAGES,
+} from "@/features/host/properties/lib/constants";
 import { z } from "zod";
 
 export const createPropertySchema = z.object({
@@ -35,4 +39,17 @@ export const locationSchema = z.object({
 
 export const amenitySchema = z.object({
   amenityIds: z.array(z.uuid()).min(1, "Please select at least one amenity"),
+});
+
+export const photosSchema = z.object({
+  images: z
+    .array(z.instanceof(File))
+    .min(MIN_IMAGES, `Upload at least ${MIN_IMAGES} images`)
+    .refine(
+      (files) =>
+        files.every((file) => ACCEPTED_IMAGE_TYPES.includes(file.type)),
+      {
+        message: "Only JPG, PNG, and WebP images are allowed",
+      },
+    ),
 });
