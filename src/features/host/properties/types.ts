@@ -1,6 +1,7 @@
 import type {
   amenitySchema,
   createPropertySchema,
+  photosSchema,
 } from "@/shared/schema/properties-schema";
 import type { z } from "zod";
 
@@ -13,6 +14,7 @@ export type PropertyTypes = {
 
 export type CreatePropertyInput = z.infer<typeof createPropertySchema>;
 export type AmenityInput = z.infer<typeof amenitySchema>;
+export type PhotosInput = z.infer<typeof photosSchema>;
 
 export type Property = CreatePropertyInput & {
   id: string;
@@ -53,6 +55,7 @@ export interface PropertyImage {
   url: string;
   isCover: boolean;
   publicId: string;
+  file?: File;
 }
 
 export interface PropertyPricing {

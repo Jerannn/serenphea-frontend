@@ -10,22 +10,7 @@ import AmenityItem from "./AmenityItem";
 import { amenitySchema } from "@/shared/schema/properties-schema";
 import { useEffect } from "react";
 import { groupAmenitiesByCategory } from "@/features/host/properties/lib/utils";
-
-const CATEGORY_ORDER = [
-  "essentials",
-  "bathroom",
-  "kitchen",
-  "entertainment",
-  "safety",
-  "facilities",
-  "outdoor",
-  "services",
-  "family",
-  "internet_office",
-  "accessibility",
-  "pet",
-  "rules",
-];
+import { CATEGORY_ORDER } from "@/features/host/properties/lib/constants";
 
 export default function AmenitiesStep() {
   const amenitiesList = useLoaderData<Amenity[]>();

@@ -1,64 +1,63 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import type { PropertyImage } from "@/features/host/properties/types";
+import usePropertyImages from "@/features/host/properties/hooks/usePropertyImages";
+import {
+  ACCEPTED_IMAGE_TYPES,
+  MIN_IMAGES,
+} from "@/features/host/properties/lib/constants";
+import type {
+  PhotosInput,
+  PropertyImage,
+} from "@/features/host/properties/types";
 import { cn } from "@/lib/utils";
+import { photosSchema } from "@/shared/schema/properties-schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Bell, Upload, X } from "lucide-react";
-import { useRef, useState, type ChangeEvent, type DragEvent } from "react";
-
-const defaultImageFormats = ["image/jpeg", "image/png", "image/webp"];
-const maxFiles = 5;
+import { useEffect, useRef } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 export default function PhotosStep() {
-  const [uploadedFiles, setUploadedFiles] = useState<PropertyImage[]>([]);
-  const [isDragging, setIsDragging] = useState(false);
   const fileInutRef = useRef<HTMLInputElement>(null);
 
-  const handleFileInput = (e: ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
+  const {
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<PhotosInput>({
+    resolver: zodResolver(photosSchema),
+    defaultValues: { images: [] },
+  });
 
-    if (files) {
-      handleUploadedFiles(files);
-    }
-  };
+  const {
+    uploadedFiles,
+    isDragging,
+    handleFileInput,
+    handleDragOver,
+    handleLeave,
+    handleDrop,
+    removeImage,
+  } = usePropertyImages({ syncFiles });
 
-  const handleDragOver = (e: DragEvent) => {
-    e.preventDefault();
-    setIsDragging(true);
-  };
-
-  const handleLeave = (e: DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-  };
-
-  const handleDrop = (e: DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-    const files = e.dataTransfer.files;
-    handleUploadedFiles(files);
-  };
-
-  const handleUploadedFiles = (files: FileList) => {
-    const fileList = Array.from(files);
-    const validFiles = fileList.filter((file) =>
-      defaultImageFormats.includes(file.type),
+  function syncFiles(files: PropertyImage[]) {
+    setValue(
+      "images",
+      files.map((file) => file.file!),
     );
+  }
 
-    const hasCover = uploadedFiles.some((file) => file.isCover === true);
-
-    const newUploadedFiles = validFiles.map((file, index) => ({
-      id: crypto.randomUUID(),
-      url: URL.createObjectURL(file),
-      isCover: !hasCover && index === 0 ? true : false,
-      publicId: "",
-    }));
-
-    setUploadedFiles((prev) => [...prev, ...newUploadedFiles]);
+  const onSubmit = (data: PhotosInput) => {
+    console.log(data);
   };
 
-  const removeImage = (id: string) => {
-    setUploadedFiles((prev) => prev.filter((file) => file.id !== id));
-  };
+  useEffect(() => {
+    if (errors.images) {
+      toast.error("Upload failed", {
+        description: errors.images.message,
+        className: "bg-destructive text-white border-destructive",
+      });
+    }
+  }, [errors.images]);
 
   return (
     <div className="container mx-auto px-4 py-12 lg:px-20">
@@ -71,7 +70,7 @@ export default function PhotosStep() {
       </p>
 
       <form
-        // onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(onSubmit)}
         id="photos-property-form"
         className="space-y-10"
       >
@@ -136,7 +135,10 @@ export default function PhotosStep() {
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {uploadedFiles.map((file) => (
-                <div className="relative aspect-square rounded-xl overflow-hidden group border border-border/60 bg-white">
+                <div
+                  key={file.id}
+                  className="relative aspect-square rounded-xl overflow-hidden group border border-border/60 bg-white"
+                >
                   <img
                     src={file.url}
                     alt={`Image ${file.id}`}
