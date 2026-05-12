@@ -2,6 +2,7 @@ import type {
   amenitySchema,
   createPropertySchema,
   photosSchema,
+  pricingSchema,
 } from "@/shared/schema/properties-schema";
 import type { z } from "zod";
 
@@ -15,6 +16,7 @@ export type PropertyTypes = {
 export type CreatePropertyInput = z.infer<typeof createPropertySchema>;
 export type AmenityInput = z.infer<typeof amenitySchema>;
 export type PhotosInput = z.infer<typeof photosSchema>;
+export type PricingInput = z.infer<typeof pricingSchema>;
 
 export type Property = CreatePropertyInput & {
   id: string;
