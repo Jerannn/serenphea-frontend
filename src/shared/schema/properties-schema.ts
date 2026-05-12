@@ -53,3 +53,20 @@ export const photosSchema = z.object({
       },
     ),
 });
+
+export const pricingSchema = z.object({
+  basePrice: z.number().positive({
+    message: "Please enter a per night price",
+  }),
+  cleaningFee: z
+    .number()
+    .nonnegative({ message: "Please enter a cleaning fee" }),
+  weeklyDiscount: z
+    .number({ message: "Weekly discount must be a number" })
+    .min(0, { message: "Must be at least 0%" })
+    .max(100, { message: "Cannot exceed 100%" }),
+  monthlyDiscount: z
+    .number({ message: "Monthly discount must be a number" })
+    .min(0, { message: "Must be at least 0%" })
+    .max(100, { message: "Cannot exceed 100%" }),
+});

@@ -5,6 +5,7 @@ import type {
   CreatePropertyInput,
   PropertyImage,
   PropertyLocation,
+  PropertyPricing,
   PropertyWithRelations,
   Step,
 } from "../types";
@@ -24,6 +25,9 @@ type PropertyState = {
   setLocation: (data: PropertyLocation) => void;
   setAmenities: (data: Amenity[]) => void;
   setImages: (data: PropertyImage[]) => void;
+  setPricing: (data: PropertyPricing) => void;
+  // setAvailability: (data: PropertyWithRelations["availability"]) => void;
+  // setBookingSettings: (data: PropertyWithRelations["bookingSettings"]) => void;
 };
 
 const initialSteps = [
@@ -153,6 +157,14 @@ export const usePropertyStore = create<PropertyState>()(
           property: {
             ...state.property,
             images: data,
+          },
+        })),
+
+      setPricing: (data) =>
+        set((state) => ({
+          property: {
+            ...state.property,
+            pricing: data,
           },
         })),
     }),

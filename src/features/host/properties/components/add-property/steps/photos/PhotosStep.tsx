@@ -46,7 +46,6 @@ export default function PhotosStep() {
 
   const onSubmit = (data: PhotosInput) => {
     const formData = new FormData();
-
     data.images.forEach((image) => formData.append("images", image));
 
     submit(formData, { method: "put", encType: "multipart/form-data" });
@@ -56,13 +55,11 @@ export default function PhotosStep() {
     if (errors.images) {
       toast.error("Upload failed", {
         description: errors.images.message,
-        className: "bg-destructive text-white border-destructive",
       });
     }
     if (errorResponse?.status === "fail") {
       toast.error("Upload failed", {
         description: errorResponse.message,
-        className: "bg-destructive text-white border-destructive",
       });
     }
   }, [errors.images, errorResponse]);
@@ -77,11 +74,7 @@ export default function PhotosStep() {
         images.
       </p>
 
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        id="photos-property-form"
-        className="space-y-10"
-      >
+      <form onSubmit={handleSubmit(onSubmit)} id="photos-property-form">
         <PhotoUploadDropzone
           handleFileInput={handleFileInput}
           handleDragOver={handleDragOver}
