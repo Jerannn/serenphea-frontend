@@ -1,13 +1,16 @@
 import { useState, type ChangeEvent, type DragEvent } from "react";
 import type { PropertyImage } from "../types";
 import { ACCEPTED_IMAGE_TYPES } from "../lib/constants";
+import { usePropertyStore } from "../store/PropertyStore";
 
 type useDragProps = {
   syncFiles: (files: PropertyImage[]) => void;
 };
 
 export default function usePropertyImages({ syncFiles }: useDragProps) {
-  const [uploadedFiles, setUploadedFiles] = useState<PropertyImage[]>([]);
+  const initialImages = usePropertyStore((state) => state.property.images);
+  const [uploadedFiles, setUploadedFiles] =
+    useState<PropertyImage[]>(initialImages);
   const [isDragging, setIsDragging] = useState(false);
 
   const handleFileInput = (e: ChangeEvent<HTMLInputElement>) => {

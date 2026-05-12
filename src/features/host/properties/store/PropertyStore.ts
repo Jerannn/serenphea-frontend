@@ -3,6 +3,7 @@ import { persist, createJSONStorage } from "zustand/middleware";
 import type {
   Amenity,
   CreatePropertyInput,
+  PropertyImage,
   PropertyLocation,
   PropertyWithRelations,
   Step,
@@ -22,6 +23,7 @@ type PropertyState = {
   setBaseProperty: (data: CreatePropertyInput) => void;
   setLocation: (data: PropertyLocation) => void;
   setAmenities: (data: Amenity[]) => void;
+  setImages: (data: PropertyImage[]) => void;
 };
 
 const initialSteps = [
@@ -143,6 +145,14 @@ export const usePropertyStore = create<PropertyState>()(
           property: {
             ...state.property,
             amenities: data,
+          },
+        })),
+
+      setImages: (data) =>
+        set((state) => ({
+          property: {
+            ...state.property,
+            images: data,
           },
         })),
     }),

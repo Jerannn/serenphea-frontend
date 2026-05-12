@@ -10,6 +10,7 @@ import AmenitiesPage from "@/pages/host/add-property/AmenitiesPage";
 import basicInfoAction from "@/features/host/properties/actions/basic-info-action";
 import locationAction from "@/features/host/properties/actions/location-action";
 import amenitiesAction from "@/features/host/properties/actions/amenities-action";
+import photosAction from "@/features/host/properties/actions/photos-action";
 
 import basicInfoLoader from "@/features/host/properties/loaders/basic-info-loader";
 import propertiesLoader from "@/features/host/properties/loaders/properties-loader";
@@ -68,7 +69,7 @@ const dashboardRoutes = {
             {
               path: "photos",
               Component: PhotosPage,
-              // action: amenitiesAction,
+              action: photosAction,
               // loader: amenitiesLoader,
               handle: { title: "Photos" },
             },
