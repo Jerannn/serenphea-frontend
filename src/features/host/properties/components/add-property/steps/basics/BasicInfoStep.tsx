@@ -1,30 +1,15 @@
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
-  Field,
-  FieldDescription,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-} from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import PropertyTypeList from "../../PropertyTypeList";
+import { FieldGroup } from "@/components/ui/field";
 import type { CreatePropertyInput, PropertyType } from "../../../../types";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { createPropertySchema } from "@/shared/schema/properties-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLoaderData, useSubmit } from "react-router-dom";
 import { usePropertyStore } from "../../../../store/PropertyStore";
+import BasicInputField from "./BasicInputField";
+import BasicTypeField from "./BasicTypeField";
+import BasicTypeDialog from "./BasicTypeDialog";
+import OccupancySection from "./OccupancySection";
+import RoomsSection from "./RoomsSection";
 
 export default function BasicInfoStep() {
   const base = usePropertyStore((state) => state.property);
@@ -43,7 +28,10 @@ export default function BasicInfoStep() {
       propertyTypeId: base.propertyTypeId,
       title: base.title,
       description: base.description,
-      guests: base.guests,
+      maxAdults: base.maxAdults,
+      maxChildren: base.maxChildren,
+      maxInfants: base.maxInfants,
+      maxPets: base.maxPets,
       bedrooms: base.bedrooms,
       beds: base.beds,
       bathrooms: base.bathrooms,
@@ -65,140 +53,32 @@ export default function BasicInfoStep() {
 
       <form onSubmit={handleSubmit(onSubmit)} id="basics-property-form">
         <FieldGroup>
-          <Field>
-            <FieldLabel>What type of property is this?</FieldLabel>
-            <Controller
-              name="propertyTypeId"
-              control={control}
-              render={({ field }) => (
-                <PropertyTypeList
-                  items={propertyTypeSlice}
-                  selectedType={field.value}
-                  onChange={field.onChange}
-                  className="grid grid-cols-2 gap-4 md:grid-cols-3"
-                />
-              )}
-            />
+          <BasicTypeField
+            propertyTypes={propertyTypeSlice}
+            control={control}
+            errors={errors}
+          >
+            <BasicTypeDialog propertyTypes={propertyTypes} control={control} />
+          </BasicTypeField>
 
-            <div className="flex justify-end">
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button type="button" variant="link" size="sm">
-                    See more
-                  </Button>
-                </DialogTrigger>
+          <BasicInputField
+            label="Title"
+            id="title"
+            placeholder="e.g., Cozy beachfront apartment with ocean views"
+            register={register}
+            errors={errors}
+          />
 
-                <DialogContent className="flex max-h-[85vh] w-full max-w-lg flex-col">
-                  <DialogHeader>
-                    <DialogTitle>Property Types</DialogTitle>
-                    <DialogDescription>
-                      This is a dialog with scrollable content.
-                    </DialogDescription>
-                  </DialogHeader>
+          <BasicInputField
+            label="Description"
+            id="description"
+            placeholder="Describe what makes your property special. Include details about the space, nearby attractions, and what guests can expect..."
+            register={register}
+            errors={errors}
+          />
 
-                  <Controller
-                    name="propertyTypeId"
-                    control={control}
-                    render={({ field }) => (
-                      <PropertyTypeList
-                        items={propertyTypes}
-                        selectedType={field.value}
-                        onChange={field.onChange}
-                        className="flex-1 space-y-2 overflow-y-auto pr-2"
-                      />
-                    )}
-                  />
-
-                  <DialogFooter>
-                    <DialogClose asChild>
-                      <Button variant="outline">Close</Button>
-                    </DialogClose>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
-            </div>
-            {errors.propertyTypeId && (
-              <FieldError>{errors.propertyTypeId.message}</FieldError>
-            )}
-          </Field>
-
-          <Field>
-            <FieldLabel htmlFor="title">Title</FieldLabel>
-            <Input
-              placeholder="e.g., Cozy beachfront apartment with ocean views"
-              id="title"
-              type="text"
-              className="border-border bg-white"
-              {...register("title")}
-            />
-            <FieldDescription>0/100 characters</FieldDescription>
-            {errors.title && <FieldError>{errors.title.message}</FieldError>}
-          </Field>
-
-          <Field>
-            <FieldLabel htmlFor="description">Description</FieldLabel>
-            <Textarea
-              placeholder="Describe what makes your property special. Include details about the space, nearby attractions, and what guests can expect..."
-              id="description"
-              className="border-border bg-white"
-              {...register("description")}
-            />
-            {errors.description && (
-              <FieldError>{errors.description.message}</FieldError>
-            )}
-          </Field>
-
-          <Field>
-            <FieldLabel htmlFor="guests">Guests</FieldLabel>
-            <Input
-              type="number"
-              placeholder="0"
-              id="guests"
-              className="border-border bg-white"
-              {...register("guests", { valueAsNumber: true })}
-            />
-            {errors.guests && <FieldError>{errors.guests.message}</FieldError>}
-          </Field>
-
-          <Field>
-            <FieldLabel htmlFor="bedrooms">Bedrooms</FieldLabel>
-            <Input
-              type="number"
-              placeholder="0"
-              id="bedrooms"
-              className="border-border bg-white"
-              {...register("bedrooms", { valueAsNumber: true })}
-            />
-            {errors.bedrooms && (
-              <FieldError>{errors.bedrooms.message}</FieldError>
-            )}
-          </Field>
-
-          <Field>
-            <FieldLabel htmlFor="beds">Beds</FieldLabel>
-            <Input
-              type="number"
-              placeholder="0"
-              id="beds"
-              className="border-border bg-white"
-              {...register("beds", { valueAsNumber: true })}
-            />
-            {errors.beds && <FieldError>{errors.beds.message}</FieldError>}
-          </Field>
-
-          <Field>
-            <FieldLabel htmlFor="bathrooms">Bathrooms</FieldLabel>
-            <Input
-              type="number"
-              placeholder="0"
-              id="bathrooms"
-              className="border-border bg-white"
-              {...register("bathrooms", { valueAsNumber: true })}
-            />
-            {errors.bathrooms && (
-              <FieldError>{errors.bathrooms.message}</FieldError>
-            )}
-          </Field>
+          <OccupancySection register={register} errors={errors} />
+          <RoomsSection register={register} errors={errors} />
         </FieldGroup>
       </form>
     </div>

@@ -11,7 +11,20 @@ export const createPropertySchema = z.object({
   title: z.string().min(1, { message: "Please enter a property title" }),
   description: z.string().min(1, { message: "Please enter a description" }),
 
-  guests: z.number().min(1, { message: "Please enter a number of guests" }),
+  maxAdults: z
+    .number()
+    .int()
+    .min(1, { message: "At least 1 adult is required" }),
+  maxChildren: z
+    .number()
+    .int()
+    .min(0, { message: "Children cannot be negative" }),
+  maxInfants: z
+    .number()
+    .int()
+    .min(0, { message: "Infants cannot be negative" }),
+  maxPets: z.number().int().min(0, { message: "Pets cannot be negative" }),
+
   bedrooms: z.number().min(1, { message: "Please enter a number of bedrooms" }),
   beds: z.number().min(1, { message: "Please enter a number of beds" }),
   bathrooms: z
