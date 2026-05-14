@@ -15,7 +15,7 @@ export default function PhotoPreviewGrid({
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between my-4">
         <p className="text-sm font-medium text-foreground">
           Uploaded images ({uploadedFiles.length}/{20})
         </p>

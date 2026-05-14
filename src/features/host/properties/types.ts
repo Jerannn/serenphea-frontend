@@ -1,5 +1,6 @@
 import type {
   amenitySchema,
+  bookingSettingsSchema,
   createPropertySchema,
   photosSchema,
   pricingSchema,
@@ -17,6 +18,7 @@ export type CreatePropertyInput = z.infer<typeof createPropertySchema>;
 export type AmenityInput = z.infer<typeof amenitySchema>;
 export type PhotosInput = z.infer<typeof photosSchema>;
 export type PricingInput = z.infer<typeof pricingSchema>;
+export type BookingSettingsInput = z.infer<typeof bookingSettingsSchema>;
 
 export type Property = CreatePropertyInput & {
   id: string;

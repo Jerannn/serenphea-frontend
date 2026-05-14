@@ -83,3 +83,54 @@ export const pricingSchema = z.object({
     .min(0, { message: "Must be at least 0%" })
     .max(100, { message: "Cannot exceed 100%" }),
 });
+
+const timeRegex = /^([01]\d|2[0-3]):([0-5]\d)$/;
+
+export const bookingSettingsSchema = z
+  .object({
+    instantBook: z.boolean(),
+
+    checkInTime: z
+      .string({
+        message: "Check-in time is required",
+      })
+      .min(1, {
+        message: "Check-in time is required",
+      })
+      .regex(timeRegex, {
+        message: "Invalid time format (HH:mm)",
+      }),
+
+    checkOutTime: z
+      .string({
+        message: "Check-out time is required",
+      })
+      .min(1, {
+        message: "Check-out time is required",
+      })
+      .regex(timeRegex, {
+        message: "Invalid time format (HH:mm)",
+      }),
+
+    minNights: z
+      .number({
+        message: "Minimum nights is required",
+      })
+      .int()
+      .min(1, {
+        message: "Minimum nights must be at least 1",
+      }),
+
+    maxNights: z
+      .number({
+        message: "Maximum nights is required",
+      })
+      .int()
+      .min(1, {
+        message: "Maximum nights must be at least 1",
+      }),
+  })
+  .refine((data) => data.maxNights >= data.minNights, {
+    message: "Maximum nights must be greater than or equal to minimum nights",
+    path: ["maxNights"],
+  });

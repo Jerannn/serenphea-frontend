@@ -3,6 +3,7 @@ import { persist, createJSONStorage } from "zustand/middleware";
 import type {
   Amenity,
   CreatePropertyInput,
+  PropertyBookingSettings,
   PropertyImage,
   PropertyLocation,
   PropertyPricing,
@@ -26,8 +27,7 @@ type PropertyState = {
   setAmenities: (data: Amenity[]) => void;
   setImages: (data: PropertyImage[]) => void;
   setPricing: (data: PropertyPricing) => void;
-  // setAvailability: (data: PropertyWithRelations["availability"]) => void;
-  // setBookingSettings: (data: PropertyWithRelations["bookingSettings"]) => void;
+  setBookingSettings: (data: PropertyBookingSettings) => void;
 };
 
 const initialSteps = [
@@ -86,7 +86,14 @@ export const usePropertyStore = create<PropertyState>()(
         location: null,
         pricing: null,
         availability: null,
-        bookingSettings: null,
+        bookingSettings: {
+          propertyId: "",
+          checkInTime: "",
+          checkOutTime: "",
+          minNights: 0,
+          maxNights: 0,
+          instantBook: false,
+        },
         images: [],
         amenities: [],
         createdAt: "",
@@ -168,6 +175,14 @@ export const usePropertyStore = create<PropertyState>()(
           property: {
             ...state.property,
             pricing: data,
+          },
+        })),
+
+      setBookingSettings: (data) =>
+        set((state) => ({
+          property: {
+            ...state.property,
+            bookingSettings: data,
           },
         })),
     }),
