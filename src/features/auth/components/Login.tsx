@@ -36,8 +36,8 @@ import { loginSchema } from "@/shared/schema/auth-schema";
 import type { ErrorResponse } from "@/shared/types/response-types";
 
 const initialValues: LoginPayload = {
-  email: "sha@gmail.com",
-  password: "sha123",
+  email: "jeran@gmail.com",
+  password: "jeran123",
 };
 
 export default function Login() {

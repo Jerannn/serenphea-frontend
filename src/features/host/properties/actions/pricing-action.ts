@@ -1,6 +1,6 @@
 import { api } from "@/lib/api";
 import type { ErrorResponse } from "@/shared/types/response-types";
-import type { ActionFunctionArgs } from "react-router-dom";
+import { redirect, type ActionFunctionArgs } from "react-router-dom";
 import { usePropertyStore } from "../store/PropertyStore";
 
 export default async function action({ request, params }: ActionFunctionArgs) {
@@ -23,5 +23,5 @@ export default async function action({ request, params }: ActionFunctionArgs) {
   // move to next step
   usePropertyStore.getState().nextStep();
 
-  return;
+  return redirect(`/host/properties/${propertyId}/settings`);
 }
