@@ -6,18 +6,20 @@ import BasicInfoPage from "@/pages/host/add-property/BasicInfoPage";
 import LocationPage from "@/pages/host/add-property/LocationPage";
 import UpdatePropertyPage from "@/pages/host/add-property/UpdatePropertyPage";
 import AmenitiesPage from "@/pages/host/add-property/AmenitiesPage";
+import PhotosPage from "@/pages/host/add-property/PhotosPage";
+import PricingPage from "@/pages/host/add-property/PricingPage";
+import BookingSettingsPage from "@/pages/host/add-property/BookingSettingsPage";
 
 import basicInfoAction from "@/features/host/properties/actions/basic-info-action";
 import locationAction from "@/features/host/properties/actions/location-action";
 import amenitiesAction from "@/features/host/properties/actions/amenities-action";
 import photosAction from "@/features/host/properties/actions/photos-action";
 import pricingAction from "@/features/host/properties/actions/pricing-action";
+import bookingSettingsAction from "@/features/host/properties/actions/booking-settings-action";
 
 import basicInfoLoader from "@/features/host/properties/loaders/basic-info-loader";
 import propertiesLoader from "@/features/host/properties/loaders/properties-loader";
 import amenitiesLoader from "@/features/host/properties/loaders/amenities-loader";
-import PhotosPage from "@/pages/host/add-property/PhotosPage";
-import PricingPage from "@/pages/host/add-property/PricingPage";
 
 const dashboardRoutes = {
   path: "/host",
@@ -79,6 +81,12 @@ const dashboardRoutes = {
               Component: PricingPage,
               action: pricingAction,
               handle: { title: "Pricing" },
+            },
+            {
+              path: "settings",
+              Component: BookingSettingsPage,
+              action: bookingSettingsAction,
+              handle: { title: "Booking Settings" },
             },
           ],
         },

@@ -1,15 +1,21 @@
-import { FieldGroup } from "@/components/ui/field";
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
 import type { CreatePropertyInput, PropertyType } from "../../../../types";
 import { useForm } from "react-hook-form";
 import { createPropertySchema } from "@/shared/schema/properties-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLoaderData, useSubmit } from "react-router-dom";
 import { usePropertyStore } from "../../../../store/PropertyStore";
-import BasicInputField from "./BasicInputField";
 import BasicTypeField from "./BasicTypeField";
 import BasicTypeDialog from "./BasicTypeDialog";
 import OccupancySection from "./OccupancySection";
 import RoomsSection from "./RoomsSection";
+import FormInputField from "@/components/FormInputField";
+import { Textarea } from "@/components/ui/textarea";
 
 export default function BasicInfoStep() {
   const base = usePropertyStore((state) => state.property);
@@ -61,21 +67,26 @@ export default function BasicInfoStep() {
             <BasicTypeDialog propertyTypes={propertyTypes} control={control} />
           </BasicTypeField>
 
-          <BasicInputField
+          <FormInputField<CreatePropertyInput>
             label="Title"
             id="title"
+            type="text"
             placeholder="e.g., Cozy beachfront apartment with ocean views"
             register={register}
             errors={errors}
           />
 
-          <BasicInputField
-            label="Description"
-            id="description"
-            placeholder="Describe what makes your property special. Include details about the space, nearby attractions, and what guests can expect..."
-            register={register}
-            errors={errors}
-          />
+          <Field>
+            <FieldLabel htmlFor="description">Description</FieldLabel>
+            <Textarea
+              id="description"
+              placeholder="Describe what makes your property special. Include details about the space, nearby attractions, and what guests can expect..."
+              {...register("description")}
+            />
+            {errors.description && (
+              <FieldError>{errors.description.message}</FieldError>
+            )}
+          </Field>
 
           <OccupancySection register={register} errors={errors} />
           <RoomsSection register={register} errors={errors} />
