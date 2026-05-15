@@ -2,8 +2,13 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { Link } from "react-router-dom";
 import PropertiesTabs from "@/features/host/properties/components/PropertiesTabs";
+import { usePropertyStore } from "@/features/host/properties/store/PropertyStore";
 
 export default function PropertiesPage() {
+  const clearStoreStorage = usePropertyStore(
+    (state) => state.clearStoreStorage,
+  );
+
   return (
     <div className="p-4 md:p-8">
       {/* header */}
@@ -12,7 +17,7 @@ export default function PropertiesPage() {
           <h1 className="font-serif text-3xl font-bold m-0">My Properties</h1>
           <p className="text-muted-foreground">Manage your properties</p>
         </div>
-        <Button asChild className="py-5">
+        <Button asChild className="py-5" onClick={clearStoreStorage}>
           <Link to="/host/properties/new/basics">
             <Plus className="w-4 h-4 mr-2" />
             Add new property

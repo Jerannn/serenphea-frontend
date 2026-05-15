@@ -49,7 +49,7 @@ export interface PropertyLocation {
   city: string;
   region: string;
   country: string;
-  postcode: string;
+  postCode: string;
   latitude: number;
   longitude: number;
 }

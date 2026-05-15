@@ -1,5 +1,9 @@
 import { api } from "@/lib/api";
-import type { ActionFunctionArgs, ErrorResponse } from "react-router-dom";
+import {
+  redirect,
+  type ActionFunctionArgs,
+  type ErrorResponse,
+} from "react-router-dom";
 import { usePropertyStore } from "../store/PropertyStore";
 
 export default async function action({ request, params }: ActionFunctionArgs) {
@@ -20,6 +24,7 @@ export default async function action({ request, params }: ActionFunctionArgs) {
   setBookingSettings(response.data.bookingSettings);
 
   // move to next step
-  //   usePropertyStore.getState().nextStep();
-  return;
+  usePropertyStore.getState().nextStep();
+
+  return redirect(`/host/properties/${propertyId}/review-listing`);
 }

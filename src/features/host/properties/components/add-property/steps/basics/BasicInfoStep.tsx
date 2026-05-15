@@ -81,6 +81,7 @@ export default function BasicInfoStep() {
             <Textarea
               id="description"
               placeholder="Describe what makes your property special. Include details about the space, nearby attractions, and what guests can expect..."
+              className="bg-white border-border"
               {...register("description")}
             />
             {errors.description && (

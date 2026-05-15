@@ -16,18 +16,14 @@ export default function StepperHeader() {
               <div
                 className={cn(
                   "w-8 h-8 rounded-full flex items-center justify-center text-sm sm:text-base font-semibold transition-all duration-500 bg-muted",
-                  index < currentStep
+                  step.isCompleted
                     ? `bg-primary text-white ${index === currentStep && "bg-accent"}`
                     : index === currentStep
                       ? "text-white bg-accent "
                       : "text-muted-foreground",
                 )}
               >
-                {index < currentStep ? (
-                  <Check className={"w-4 h-4"} />
-                ) : (
-                  index + 1
-                )}
+                {step.isCompleted ? <Check className={"w-4 h-4"} /> : index + 1}
               </div>
 
               <div className="flex flex-col items-center mt-3">

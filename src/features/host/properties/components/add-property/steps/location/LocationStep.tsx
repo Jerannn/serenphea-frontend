@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useSubmit } from "react-router-dom";
 import {
   Field,
@@ -63,6 +63,8 @@ export default function LocationStep() {
   const region = watch("region");
   const postcode = watch("postcode");
   const country = watch("country");
+  const latitude = watch("latitude") as number;
+  const longitude = watch("longitude") as number;
 
   const selectPlace = useCallback(
     (place: PlaceResult) => {
@@ -207,6 +209,12 @@ export default function LocationStep() {
       }
     });
   }, [useMyLocation, setValue, skipNextSearchRef, setSearchQuery]);
+
+  useEffect(() => {
+    if (latitude && longitude) {
+      setMarkerPosition({ lat: latitude, lng: longitude });
+    }
+  }, [latitude, longitude]);
 
   const mapCenter = markerPosition ?? MAP_CONFIG.defaultCenter;
   const mapZoom = markerPosition ? MAP_CONFIG.zoomPin : MAP_CONFIG.zoomWorld;

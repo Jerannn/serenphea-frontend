@@ -18,8 +18,9 @@ type PropertyState = {
   currentStep: number;
   nextStep: () => void;
   prevStep: () => void;
+  navigateStep: (step: number) => void;
 
-  paths: string[];
+  paths: Record<number, string>;
   setPath: (path: string) => void;
 
   setBaseProperty: (data: CreatePropertyInput) => void;
@@ -28,6 +29,7 @@ type PropertyState = {
   setImages: (data: PropertyImage[]) => void;
   setPricing: (data: PropertyPricing) => void;
   setBookingSettings: (data: PropertyBookingSettings) => void;
+  clearStoreStorage: () => void;
 };
 
 const initialSteps = [
@@ -65,51 +67,58 @@ const initialSteps = [
   { id: 7, title: "Review", description: "Final check", isCompleted: false },
 ];
 
+const initialState: Pick<
+  PropertyState,
+  "property" | "paths" | "steps" | "currentStep"
+> = {
+  property: {
+    id: "",
+    hostId: "",
+    propertyTypeId: "",
+    title: "",
+    description: "",
+    maxAdults: 0,
+    maxChildren: 0,
+    maxInfants: 0,
+    maxPets: 0,
+    bedrooms: 0,
+    beds: 0,
+    bathrooms: 0,
+    status: "draft",
+    rules: null,
+    location: null,
+    pricing: null,
+    availability: null,
+    bookingSettings: {
+      propertyId: "",
+      checkInTime: "",
+      checkOutTime: "",
+      minNights: 0,
+      maxNights: 0,
+      instantBook: false,
+    },
+    images: [],
+    amenities: [],
+    createdAt: "",
+    updatedAt: "",
+  },
+  paths: {},
+  steps: initialSteps,
+  currentStep: 0,
+};
+
 export const usePropertyStore = create<PropertyState>()(
   persist(
     (set, get) => ({
-      property: {
-        id: "",
-        hostId: "",
-        propertyTypeId: "",
-        title: "",
-        description: "",
-        maxAdults: 0,
-        maxChildren: 0,
-        maxInfants: 0,
-        maxPets: 0,
-        bedrooms: 0,
-        beds: 0,
-        bathrooms: 0,
-        status: "draft",
-        rules: null,
-        location: null,
-        pricing: null,
-        availability: null,
-        bookingSettings: {
-          propertyId: "",
-          checkInTime: "",
-          checkOutTime: "",
-          minNights: 0,
-          maxNights: 0,
-          instantBook: false,
-        },
-        images: [],
-        amenities: [],
-        createdAt: "",
-        updatedAt: "",
-      },
+      ...initialState,
 
-      paths: [],
-      setPath: (path: string) =>
+      setPath: (path: string) => {
+        const { currentStep } = get();
+
         set((state) => {
-          if (state.paths.includes(path)) return state;
-
-          return { paths: [...state.paths, path] };
-        }),
-
-      steps: initialSteps,
-      currentStep: 0,
+          return { paths: { ...state.paths, [currentStep]: path } };
+        });
+      },
 
       nextStep: () => {
         const { steps, currentStep } = get();
@@ -131,11 +140,16 @@ export const usePropertyStore = create<PropertyState>()(
 
         if (currentStep <= 0) return;
 
-        set((state) => {
-          const remainingPaths = state.paths.slice(0, state.paths.length - 1);
+        set((state) => ({
+          currentStep: state.currentStep - 1,
+        }));
+      },
+      navigateStep: (step: number) => {
+        const { currentStep } = get();
 
-          return { currentStep: state.currentStep - 1, paths: remainingPaths };
-        });
+        if (currentStep === step) return;
+
+        set({ currentStep: step });
       },
 
       setBaseProperty: (data) =>
@@ -185,14 +199,20 @@ export const usePropertyStore = create<PropertyState>()(
             bookingSettings: data,
           },
         })),
+
+      clearStoreStorage: () => {
+        const { paths, currentStep } = get();
+
+        // reset the paths and current step in the store
+        if (Object.keys(paths).length > 0 || currentStep > 0) {
+          usePropertyStore.persist.clearStorage();
+          set(initialState);
+        }
+      },
     }),
     {
       name: "property-paths",
       storage: createJSONStorage(() => sessionStorage),
-      partialize: (state) => ({
-        paths: state.paths,
-        currentStep: state.currentStep,
-      }),
     },
   ),
 );

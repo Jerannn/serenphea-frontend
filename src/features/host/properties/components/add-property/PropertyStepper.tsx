@@ -6,7 +6,7 @@ import StepNavigation from "./StepNavigation";
 import { usePropertyStore } from "../../store/PropertyStore";
 import { useEffect } from "react";
 
-export default function AddPropertyStepper() {
+export default function PropertyStepper() {
   const location = useLocation();
   const navigation = useNavigation();
 

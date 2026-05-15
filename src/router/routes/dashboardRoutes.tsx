@@ -9,6 +9,7 @@ import AmenitiesPage from "@/pages/host/add-property/AmenitiesPage";
 import PhotosPage from "@/pages/host/add-property/PhotosPage";
 import PricingPage from "@/pages/host/add-property/PricingPage";
 import BookingSettingsPage from "@/pages/host/add-property/BookingSettingsPage";
+import ReviewListingPage from "@/pages/host/add-property/ReviewListingPage";
 
 import basicInfoAction from "@/features/host/properties/actions/basic-info-action";
 import locationAction from "@/features/host/properties/actions/location-action";
@@ -87,6 +88,12 @@ const dashboardRoutes = {
               Component: BookingSettingsPage,
               action: bookingSettingsAction,
               handle: { title: "Booking Settings" },
+            },
+            {
+              path: "review-listing",
+              Component: ReviewListingPage,
+              // action: bookingSettingsAction,
+              handle: { title: "Review Listing" },
             },
           ],
         },

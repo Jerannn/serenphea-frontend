@@ -9,8 +9,12 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty";
+import { usePropertyStore } from "../store/PropertyStore";
 
 export default function EmptyProperty() {
+  const clearStoreStorage = usePropertyStore(
+    (state) => state.clearStoreStorage,
+  );
   return (
     <Empty className="h-full">
       <EmptyHeader>
@@ -24,7 +28,7 @@ export default function EmptyProperty() {
         </EmptyDescription>
       </EmptyHeader>
       <EmptyContent>
-        <Button variant="outline">
+        <Button variant="outline" onClick={clearStoreStorage}>
           <Plus />
           <Link to="/host/properties/new/basics">Add your first property</Link>
         </Button>
