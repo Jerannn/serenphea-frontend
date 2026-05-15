@@ -1,6 +1,6 @@
 import { useLoaderData, useSubmit } from "react-router-dom";
 import type { Amenity, AmenityInput } from "../../../../types";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { usePropertyStore } from "../../../../store/PropertyStore";
@@ -18,10 +18,10 @@ export default function AmenitiesStep() {
   const amenities = usePropertyStore((state) => state.property.amenities);
 
   const {
+    control,
     handleSubmit,
     formState: { errors },
     setValue,
-    watch,
     clearErrors,
   } = useForm<AmenityInput>({
     resolver: zodResolver(amenitySchema),
@@ -30,7 +30,7 @@ export default function AmenitiesStep() {
     },
   });
 
-  const selectedAmenityIds = watch("amenityIds");
+  const selectedAmenityIds = useWatch({ control, name: "amenityIds" });
   const amenitiesGrouped = groupAmenitiesByCategory(amenitiesList);
 
   const handleAmenityChange = (amenityId: string, checked: boolean) => {
