@@ -21,6 +21,9 @@ import bookingSettingsAction from "@/features/host/properties/actions/booking-se
 import basicInfoLoader from "@/features/host/properties/loaders/basic-info-loader";
 import propertiesLoader from "@/features/host/properties/loaders/properties-loader";
 import amenitiesLoader from "@/features/host/properties/loaders/amenities-loader";
+import propertyLoader from "@/features/host/properties/loaders/property-loader";
+
+import ErrorElement from "@/features/host/properties/components/ErrorElement";
 
 const dashboardRoutes = {
   path: "/host",
@@ -57,6 +60,8 @@ const dashboardRoutes = {
         {
           path: ":id",
           Component: UpdatePropertyPage,
+          loader: propertyLoader,
+          errorElement: <ErrorElement />,
           children: [
             {
               path: "location",

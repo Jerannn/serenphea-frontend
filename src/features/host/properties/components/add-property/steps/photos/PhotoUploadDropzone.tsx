@@ -8,7 +8,7 @@ type PhotoUploadDropzoneProps = {
   handleLeave: (e: React.DragEvent<HTMLDivElement>) => void;
   handleDrop: (e: React.DragEvent<HTMLDivElement>) => void;
   isDragging: boolean;
-  fileInutRef: React.RefObject<HTMLInputElement | null>;
+  fileInputRef: React.RefObject<HTMLInputElement | null>;
 };
 
 export default function PhotoUploadDropzone({
@@ -17,14 +17,14 @@ export default function PhotoUploadDropzone({
   handleLeave,
   handleDrop,
   isDragging,
-  fileInutRef,
+  fileInputRef,
 }: PhotoUploadDropzoneProps) {
   return (
     <div
       onDragOver={handleDragOver}
       onDragLeave={handleLeave}
       onDrop={handleDrop}
-      onClick={() => fileInutRef.current?.click()}
+      onClick={() => fileInputRef.current?.click()}
       className={cn(
         "relative cursor-pointer transition-all duration-300 flex flex-col items-center justify-center gap-2 border-2 border-dashed rounded-2xl bg-card p-8 ",
         isDragging
@@ -37,7 +37,7 @@ export default function PhotoUploadDropzone({
         name="images"
         id="images"
         multiple
-        ref={fileInutRef}
+        ref={fileInputRef}
         onChange={handleFileInput}
         className="hidden"
       />

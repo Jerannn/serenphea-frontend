@@ -1,6 +1,6 @@
 import {
   ACCEPTED_IMAGE_TYPES,
-  MIN_IMAGES,
+  MAX_IMAGES,
 } from "@/features/host/properties/lib/constants";
 import { z } from "zod";
 
@@ -57,7 +57,8 @@ export const amenitySchema = z.object({
 export const photosSchema = z.object({
   images: z
     .array(z.instanceof(File))
-    .min(MIN_IMAGES, `Upload at least ${MIN_IMAGES} images`)
+    .min(1, "At least 1 image is required")
+    .max(MAX_IMAGES, "Maximum of 20 images allowed")
     .refine(
       (files) =>
         files.every((file) => ACCEPTED_IMAGE_TYPES.includes(file.type)),
