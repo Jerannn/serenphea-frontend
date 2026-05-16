@@ -6,7 +6,7 @@ import type {
 import { photosSchema } from "@/shared/schema/properties-schema";
 import type { ErrorResponse } from "@/shared/types/response-types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useActionData, useSubmit } from "react-router-dom";
 import { toast } from "sonner";
@@ -16,7 +16,6 @@ import PhotoPreviewGrid from "./PhotoPreviewGrid";
 export default function PhotosStep() {
   const submit = useSubmit();
   const errorResponse = useActionData<ErrorResponse>();
-  const fileInutRef = useRef<HTMLInputElement>(null);
 
   const {
     handleSubmit,
@@ -28,6 +27,7 @@ export default function PhotosStep() {
   });
 
   const {
+    imageRemoveIds,
     uploadedFiles,
     isDragging,
     handleFileInput,
@@ -35,6 +35,7 @@ export default function PhotosStep() {
     handleLeave,
     handleDrop,
     removeImage,
+    fileInputRef,
   } = usePropertyImages({ syncFiles });
 
   function syncFiles(files: PropertyImage[]) {
@@ -47,6 +48,10 @@ export default function PhotosStep() {
   const onSubmit = (data: PhotosInput) => {
     const formData = new FormData();
     data.images.forEach((image) => formData.append("images", image));
+
+    imageRemoveIds.forEach((id) => {
+      formData.append("imageRemoveIds[]", id);
+    });
 
     submit(formData, { method: "put", encType: "multipart/form-data" });
   };
@@ -81,7 +86,7 @@ export default function PhotosStep() {
           handleLeave={handleLeave}
           handleDrop={handleDrop}
           isDragging={isDragging}
-          fileInutRef={fileInutRef}
+          fileInputRef={fileInputRef}
         />
 
         <PhotoPreviewGrid

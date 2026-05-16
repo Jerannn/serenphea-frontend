@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent, type DragEvent } from "react";
+import { useRef, useState, type ChangeEvent, type DragEvent } from "react";
 import type { PropertyImage } from "../types";
 import { ACCEPTED_IMAGE_TYPES } from "../lib/constants";
 import { usePropertyStore } from "../store/PropertyStore";
@@ -12,6 +12,8 @@ export default function usePropertyImages({ syncFiles }: useDragProps) {
   const [uploadedFiles, setUploadedFiles] =
     useState<PropertyImage[]>(initialImages);
   const [isDragging, setIsDragging] = useState(false);
+  const [imageRemoveIds, setImageRemoveIds] = useState<string[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileInput = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -61,7 +63,10 @@ export default function usePropertyImages({ syncFiles }: useDragProps) {
           isCover: index === 0,
         }),
       );
-      syncFiles(updatedFiles);
+
+      const validFiles = updatedFiles.filter((file) => file.file);
+
+      syncFiles(validFiles);
       return updatedFiles;
     });
   };
@@ -69,13 +74,33 @@ export default function usePropertyImages({ syncFiles }: useDragProps) {
   const removeImage = (id: string) => {
     setUploadedFiles((prev) => {
       const updatedFiles = prev.filter((file) => file.id !== id);
-      syncFiles(updatedFiles);
 
       return updatedFiles;
     });
+
+    const removedImage = uploadedFiles.find((file) => file.id === id);
+
+    if (removedImage) {
+      syncFiles(uploadedFiles.filter((file) => file.id !== id && file.file));
+
+      if (removedImage.publicId && !removedImage.file) {
+        setImageRemoveIds((prev) => [...prev, removedImage.id]);
+      }
+
+      URL.revokeObjectURL(removedImage.url);
+      if (fileInputRef.current?.value) fileInputRef.current.value = "";
+    }
+
+    if (removedImage?.file) {
+      URL.revokeObjectURL(removedImage.url);
+      if (fileInputRef.current?.value) {
+        fileInputRef.current.value = "";
+      }
+    }
   };
 
   return {
+    imageRemoveIds,
     uploadedFiles,
     isDragging,
     handleFileInput,
@@ -83,5 +108,6 @@ export default function usePropertyImages({ syncFiles }: useDragProps) {
     handleLeave,
     handleDrop,
     removeImage,
+    fileInputRef,
   };
 }

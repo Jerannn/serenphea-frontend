@@ -23,6 +23,7 @@ type PropertyState = {
   paths: Record<number, string>;
   setPath: (path: string) => void;
 
+  setProperty: (data: PropertyWithRelations) => void;
   setBaseProperty: (data: CreatePropertyInput) => void;
   setLocation: (data: PropertyLocation) => void;
   setAmenities: (data: Amenity[]) => void;
@@ -151,6 +152,8 @@ export const usePropertyStore = create<PropertyState>()(
 
         set({ currentStep: step });
       },
+
+      setProperty: (data) => set({ property: data }),
 
       setBaseProperty: (data) =>
         set((state) => ({
