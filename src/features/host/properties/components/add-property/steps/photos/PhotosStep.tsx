@@ -12,6 +12,7 @@ import { useActionData, useSubmit } from "react-router-dom";
 import { toast } from "sonner";
 import PhotoUploadDropzone from "./PhotoUploadDropzone";
 import PhotoPreviewGrid from "./PhotoPreviewGrid";
+import PropertyStepLayout from "../../PropertyStepLayout";
 
 export default function PhotosStep() {
   const submit = useSubmit();
@@ -70,15 +71,11 @@ export default function PhotosStep() {
   }, [errors.images, errorResponse]);
 
   return (
-    <div className="container mx-auto px-4 py-12 lg:px-20">
-      <h1 className="font-serif text-3xl font-bold">
-        Add photos of your property
-      </h1>
-      <p className="mb-8 text-muted-foreground">
-        Great photos help your listing stand out. Upload at least 5 high-quality
-        images.
-      </p>
-
+    <PropertyStepLayout
+      title="Add photos of your property"
+      description="Great photos help your listing stand out. Upload at least 5 high-quality
+        images."
+    >
       <form onSubmit={handleSubmit(onSubmit)} id="photos-property-form">
         <PhotoUploadDropzone
           handleFileInput={handleFileInput}
@@ -94,6 +91,6 @@ export default function PhotosStep() {
           removeImage={removeImage}
         />
       </form>
-    </div>
+    </PropertyStepLayout>
   );
 }

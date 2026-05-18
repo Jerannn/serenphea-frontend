@@ -11,6 +11,7 @@ import { amenitySchema } from "@/shared/schema/properties-schema";
 import { useEffect, useState } from "react";
 import { groupAmenitiesByCategory } from "@/features/host/properties/lib/utils";
 import { CATEGORY_ORDER } from "@/features/host/properties/lib/constants";
+import PropertyStepLayout from "../../PropertyStepLayout";
 
 export default function AmenitiesStep() {
   const amenitiesList = useLoaderData<Amenity[]>();
@@ -69,18 +70,11 @@ export default function AmenitiesStep() {
   }, [errors.amenityIds]);
 
   return (
-    <div className="mx-auto w-full max-w-6xl px-4 py-10 lg:px-8">
-      <div className="mb-10 space-y-2">
-        <h1 className="font-serif text-3xl font-semibold tracking-tight lg:text-4xl">
-          What amenities do you offer?
-        </h1>
-
-        <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground lg:text-base">
-          Select all amenities available at your property to help guests know
-          what to expect during their stay.
-        </p>
-      </div>
-
+    <PropertyStepLayout
+      title="What amenities do you offer?"
+      description="Select all amenities available at your property to help guests know
+          what to expect during their stay."
+    >
       <div className="flex">
         <Button
           type="button"
@@ -111,6 +105,6 @@ export default function AmenitiesStep() {
           })}
         </div>
       </form>
-    </div>
+    </PropertyStepLayout>
   );
 }

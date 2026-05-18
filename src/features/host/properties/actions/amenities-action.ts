@@ -10,7 +10,6 @@ import type { Amenity } from "../types";
 export default async function action({ request, params }: ActionFunctionArgs) {
   const data = await request.json();
   const propertyId = params.id;
-  console.log(data);
 
   const response = (await api(`/properties/${propertyId}/amenities`, {
     method: "PUT",

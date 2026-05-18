@@ -1,4 +1,9 @@
-import type { Amenity, PricingInput } from "../types";
+import type {
+  Amenity,
+  PricingInput,
+  PropertyWithRelations,
+  Step,
+} from "../types";
 import Decimal from "decimal.js";
 
 export const groupAmenitiesByCategory = (amenities: Amenity[]) => {
@@ -65,4 +70,45 @@ export const calculatePricing = ({
     weeklyPrice: weeklyPrice.toFixed(2),
     monthlyPrice: monthlyPrice.toFixed(2),
   };
+};
+
+export const evaluateStepsCompletion = (
+  property: PropertyWithRelations,
+  currentSteps: Step[],
+): Step[] => {
+  return currentSteps.map((step) => {
+    let isCompleted = false;
+
+    switch (step.id) {
+      case 1: // Basics
+        isCompleted = Boolean(property.title && property.maxAdults > 0);
+        break;
+      case 2: // Location
+        isCompleted = Boolean(property.location && property.location.street);
+        break;
+      case 3: // Amenities
+        isCompleted = Boolean(
+          property.amenities && property.amenities.length > 0,
+        );
+        break;
+      case 4: // Photos
+        isCompleted = Boolean(property.images && property.images.length > 0);
+        break;
+      case 5: // Pricing
+        isCompleted = Boolean(
+          property.pricing && property.pricing.basePrice > 0,
+        );
+        break;
+      case 6: // Settings
+        isCompleted = Boolean(
+          property.bookingSettings && property.bookingSettings.minNights > 0,
+        );
+        break;
+      case 7: // Review
+        isCompleted = property.status === "published";
+        break;
+    }
+
+    return { ...step, isCompleted };
+  });
 };

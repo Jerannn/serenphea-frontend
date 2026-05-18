@@ -16,6 +16,7 @@ import OccupancySection from "./OccupancySection";
 import RoomsSection from "./RoomsSection";
 import FormInputField from "@/components/FormInputField";
 import { Textarea } from "@/components/ui/textarea";
+import PropertyStepLayout from "../../PropertyStepLayout";
 
 export default function BasicInfoStep() {
   const base = usePropertyStore((state) => state.property);
@@ -49,14 +50,10 @@ export default function BasicInfoStep() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-12 lg:px-20">
-      <h1 className="font-serif text-3xl font-bold">
-        Let&apos;s start with the basics
-      </h1>
-      <p className="mb-8 text-muted-foreground">
-        Tell us about your property so guests can find it easily
-      </p>
-
+    <PropertyStepLayout
+      title="Let's start with the basics"
+      description="Tell us about your property so guests can find it easily"
+    >
       <form onSubmit={handleSubmit(onSubmit)} id="basics-property-form">
         <FieldGroup>
           <BasicTypeField
@@ -93,6 +90,6 @@ export default function BasicInfoStep() {
           <RoomsSection register={register} errors={errors} />
         </FieldGroup>
       </form>
-    </div>
+    </PropertyStepLayout>
   );
 }

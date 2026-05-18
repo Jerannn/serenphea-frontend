@@ -2,17 +2,28 @@ import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { Check } from "lucide-react";
 import { usePropertyStore } from "../../store/PropertyStore";
+import usePropertyStepper from "../../hooks/usePropertyStepper";
 
 export default function StepperHeader() {
   const steps = usePropertyStore((state) => state.steps);
   const currentStep = usePropertyStore((state) => state.currentStep);
+  const { goToSpecificStep } = usePropertyStepper();
 
   return (
     <div className="w-full px-2 sm:px-8">
       <div className="relative flex items-center justify-between w-full">
         {steps.map((step, index) => {
           return (
-            <div key={step.id} className="relative flex flex-col items-center">
+            <div
+              key={step.id}
+              className={cn(
+                "relative flex flex-col items-center cursor-pointer",
+                !step.isCompleted && "cursor-not-allowed",
+              )}
+              onClick={() => {
+                if (step.isCompleted) goToSpecificStep(index);
+              }}
+            >
               <div
                 className={cn(
                   "w-8 h-8 rounded-full flex items-center justify-center text-sm sm:text-base font-semibold transition-all duration-500 bg-muted",
