@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
+import { CheckCircle2, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import usePropertyStepper from "../../hooks/usePropertyStepper";
+import { usePropertyStore } from "../../store/PropertyStore";
 
 type StepNavigationProps = {
   typeAction: string;
@@ -12,7 +13,10 @@ export default function StepNavigation({
   typeAction,
   isSubmitting,
 }: StepNavigationProps) {
+  const steps = usePropertyStore((state) => state.steps);
+  const currentStep = usePropertyStore((state) => state.currentStep);
   const { goToPreviousStep } = usePropertyStepper();
+  const isLastStep = currentStep === steps.length - 1;
 
   return (
     <div className="border-t border-border/40 px-4 py-4  flex items-center justify-between sticky bottom-0 bg-card">
@@ -31,21 +35,21 @@ export default function StepNavigation({
         form={typeAction}
         disabled={isSubmitting}
       >
-        {/* {isLastStep ? (
+        {isLastStep ? (
           <>
             <span className="font-semibold">Publish Property</span>
             <CheckCircle2 className="w-4 h-4 ml-1" />
           </>
-        ) : ( */}
-        <>
-          <span className="font-semibold">Save & Continue</span>
-          {isSubmitting ? (
-            <Loader2 className="mr-2 animate-spin" />
-          ) : (
-            <ChevronRight className="w-4 h-4 ml-1" />
-          )}
-        </>
-        {/* )} */}
+        ) : (
+          <>
+            <span className="font-semibold">Save & Continue</span>
+            {isSubmitting ? (
+              <Loader2 className="mr-2 animate-spin" />
+            ) : (
+              <ChevronRight className="w-4 h-4 ml-1" />
+            )}
+          </>
+        )}
       </Button>
     </div>
   );

@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { useSubmit } from "react-router-dom";
 import PricingSummary from "./PricingSummary";
 import PricingForm from "./PricingForm";
+import PropertyStepLayout from "../../PropertyStepLayout";
 
 export default function PricingStep() {
   const pricingInitial = usePropertyStore((state) => state.property.pricing);
@@ -30,12 +31,10 @@ export default function PricingStep() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-12 lg:px-20">
-      <h1 className="font-serif text-3xl font-bold">Set your pricing</h1>
-      <p className="mb-8 text-muted-foreground">
-        You can always change your pricing later
-      </p>
-
+    <PropertyStepLayout
+      title="Set your pricing"
+      description="You can always change your pricing later"
+    >
       <form
         onSubmit={handleSubmit(onSubmit)}
         id="pricing-property-form"
@@ -44,6 +43,6 @@ export default function PricingStep() {
         <PricingForm register={register} errors={errors} />
         <PricingSummary control={control} />
       </form>
-    </div>
+    </PropertyStepLayout>
   );
 }

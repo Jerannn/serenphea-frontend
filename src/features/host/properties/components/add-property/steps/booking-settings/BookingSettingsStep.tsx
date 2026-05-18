@@ -15,6 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Clock4, Zap } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import { useSubmit } from "react-router-dom";
+import PropertyStepLayout from "../../PropertyStepLayout";
 
 export default function BookingSettingsStep() {
   const submit = useSubmit();
@@ -43,12 +44,10 @@ export default function BookingSettingsStep() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-12 lg:px-20">
-      <h1 className="font-serif text-3xl font-bold">Booking settings</h1>
-      <p className="mb-8 text-muted-foreground">
-        Set your preferences for how guests can book your property
-      </p>
-
+    <PropertyStepLayout
+      title="Booking settings"
+      description="Set your preferences for how guests can book your property"
+    >
       <form
         onSubmit={handleSubmit(onSubmit)}
         id="settings-property-form"
@@ -131,6 +130,6 @@ export default function BookingSettingsStep() {
           </Field>
         </FieldGroup>
       </form>
-    </div>
+    </PropertyStepLayout>
   );
 }

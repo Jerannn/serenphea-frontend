@@ -22,6 +22,7 @@ import { LocationSearchInput } from "@/features/host/properties/components/add-p
 import { AddressFields } from "@/features/host/properties/components/add-property/steps/location/AddressFields";
 import { LocationChips } from "@/features/host/properties/components/add-property/steps/location/LocationChips";
 import { UseCurrentLocationButton } from "@/features/host/properties/components/add-property/steps/location/UseCurrentLocationButton";
+import PropertyStepLayout from "../../PropertyStepLayout";
 
 const MAP_CONFIG = {
   defaultCenter: { lat: 18.5, lng: 0 },
@@ -220,15 +221,11 @@ export default function LocationStep() {
   const mapZoom = markerPosition ? MAP_CONFIG.zoomPin : MAP_CONFIG.zoomWorld;
 
   return (
-    <div className="container mx-auto px-4 py-12 lg:px-20">
-      <h1 className="font-serif text-3xl font-bold">
-        Where&apos;s your property located?
-      </h1>
-      <p className="mb-8 text-muted-foreground">
-        Search like you would on an envelope, then fine-tune the pin on the map.
-        Guests only see the full address after a reservation.
-      </p>
-
+    <PropertyStepLayout
+      title="Where's your property located?"
+      description="Search like you would on an envelope, then fine-tune the pin on the
+          map. Guests only see the full address after a reservation."
+    >
       <form
         id="location-property-form"
         onSubmit={handleSubmit((data) => submit(data, { method: "put" }))}
@@ -329,6 +326,6 @@ export default function LocationStep() {
           .
         </p>
       </form>
-    </div>
+    </PropertyStepLayout>
   );
 }
