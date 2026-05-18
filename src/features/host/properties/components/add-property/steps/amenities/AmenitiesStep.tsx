@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import AmenityCategorySection from "./AmenityCategorySection";
 import AmenityItem from "./AmenityItem";
 import { amenitySchema } from "@/shared/schema/properties-schema";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { groupAmenitiesByCategory } from "@/features/host/properties/lib/utils";
 import { CATEGORY_ORDER } from "@/features/host/properties/lib/constants";
 
@@ -16,6 +16,8 @@ export default function AmenitiesStep() {
   const amenitiesList = useLoaderData<Amenity[]>();
   const submit = useSubmit();
   const amenities = usePropertyStore((state) => state.property.amenities);
+
+  const [removeAmenityIds, setRemoveAmenityIds] = useState<string[]>([]);
 
   const {
     control,
@@ -37,19 +39,27 @@ export default function AmenitiesStep() {
     // Add
     if (checked) {
       setValue("amenityIds", [...selectedAmenityIds, amenityId]);
+      setRemoveAmenityIds((prev) => {
+        return prev.filter((id) => id !== amenityId);
+      });
       if (selectedAmenityIds.length === 1) clearErrors("amenityIds");
       return;
     }
 
     // Remove
-    setValue(
-      "amenityIds",
-      selectedAmenityIds.filter((id) => id !== amenityId),
+    const updatedAmenityIds = selectedAmenityIds.filter(
+      (id) => id !== amenityId,
     );
+    setValue("amenityIds", updatedAmenityIds);
+    setRemoveAmenityIds((prev) => [...prev, amenityId]);
   };
 
   const onSubmit = (data: AmenityInput) => {
-    submit(data, { method: "put", encType: "application/json" });
+    const amenityData = {
+      amenityIds: data.amenityIds,
+      removeAmenityIds,
+    };
+    submit(amenityData, { method: "put", encType: "application/json" });
   };
 
   useEffect(() => {
