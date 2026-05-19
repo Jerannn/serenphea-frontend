@@ -25,10 +25,16 @@ import amenitiesLoader from "@/features/host/properties/loaders/amenities-loader
 import propertyLoader from "@/features/host/properties/loaders/property-loader";
 
 import ErrorElement from "@/features/host/properties/components/ErrorElement";
+import Spinner from "@/components/Spinner";
 
 const dashboardRoutes = {
   path: "/host",
   Component: DashboardLayout,
+  HydrateFallback: () => (
+    <div className="min-h-dvh w-full flex justify-center items-center">
+      <Spinner />
+    </div>
+  ),
   children: [
     {
       index: true,

@@ -107,8 +107,8 @@ export interface Amenity {
 }
 
 export type NextCursor = {
-  createdAt: string | Date;
-  id: string;
+  createdAt: string | null;
+  id: string | null;
 } | null;
 
 export type Step = {

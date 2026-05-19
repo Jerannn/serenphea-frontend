@@ -10,8 +10,6 @@ import { usePropertyStore } from "../store/PropertyStore";
 export default async function action({ params }: ActionFunctionArgs) {
   const propertyId = params.id;
 
-  console.log("published");
-
   const response = (await api(`/properties/${propertyId}/publish`, {
     method: "POST",
   })) as SuccessResponse<{ property: PropertyWithRelations }> | ErrorResponse;

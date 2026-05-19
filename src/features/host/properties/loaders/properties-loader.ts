@@ -1,12 +1,27 @@
-import { api } from "@/lib/api";
 import type { NextCursor, PropertyWithRelations } from "../types";
+import { queryClient } from "@/lib/queryClient";
+import { getProperties } from "@/services/api/properties";
 
-export default async function loader(): Promise<{
-  meta: NextCursor;
-  properties: PropertyWithRelations[];
-}> {
-  const response = await api(`/properties`);
+const initialCursor: NextCursor = {
+  createdAt: null,
+  id: null,
+};
 
-  const { meta, properties } = response.data;
-  return { meta, properties };
+export const propertiesQuery = () => ({
+  queryKey: ["properties"],
+
+  queryFn: getProperties,
+
+  initialPageParam: initialCursor,
+
+  getNextPageParam: (lastPage: {
+    meta: { nextCursor: NextCursor };
+    properties: PropertyWithRelations[];
+  }) => lastPage.meta?.nextCursor,
+});
+
+export default async function loader() {
+  await queryClient.ensureInfiniteQueryData(propertiesQuery());
+
+  return null;
 }

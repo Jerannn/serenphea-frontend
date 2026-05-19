@@ -4,11 +4,11 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
-import type { CreatePropertyInput, PropertyType } from "../../../../types";
+import type { CreatePropertyInput } from "../../../../types";
 import { useForm } from "react-hook-form";
 import { createPropertySchema } from "@/shared/schema/properties-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useLoaderData, useSubmit } from "react-router-dom";
+import { useSubmit } from "react-router-dom";
 import { usePropertyStore } from "../../../../store/PropertyStore";
 import BasicTypeField from "./BasicTypeField";
 import BasicTypeDialog from "./BasicTypeDialog";
@@ -17,11 +17,15 @@ import RoomsSection from "./RoomsSection";
 import FormInputField from "@/components/FormInputField";
 import { Textarea } from "@/components/ui/textarea";
 import PropertyStepLayout from "../../PropertyStepLayout";
+import { useQuery } from "@tanstack/react-query";
+import { propertyTypesQuery } from "../../../../loaders/basic-info-loader";
 
 export default function BasicInfoStep() {
   const base = usePropertyStore((state) => state.property);
   const submit = useSubmit();
-  const propertyTypes = (useLoaderData() as PropertyType[]) || [];
+  const { data: propertyTypes = [] } = useQuery({
+    ...propertyTypesQuery(),
+  });
   const propertyTypeSlice = propertyTypes.slice(0, 6);
 
   const {

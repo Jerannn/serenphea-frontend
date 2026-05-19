@@ -6,34 +6,23 @@ import { Calendar, Edit, MapPin, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 import PropertyActionsMenu from "./PropertyActionsMenu";
 import type { PropertyWithRelations } from "../types";
+import {
+  DEFAULT_BOOKING_SETTINGS,
+  DEFAULT_LOCATION,
+  DEFAULT_PRICING,
+  DEFAULT_PROPERTY_IMAGE,
+} from "../lib/constants";
 
 type PropertyProps = {
   properties: PropertyWithRelations[];
 };
 
-const DEFAULT_LOCATION = {
-  city: "Unknown city",
-  country: "Unknown country",
-};
-
-const DEFAULT_PRICING = {
-  basePrice: 0,
-};
-
-const DEFAULT_BOOKING_SETTINGS = {
-  instantBook: false,
-  minNights: 1,
-  maxNights: 30,
-};
-
-const DEFAULT_PROPERTY_IMAGE =
-  "https://placehold.co/800x500?text=No+Image+Available";
-
 export default function Property({ properties }: PropertyProps) {
-  console.log(properties);
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {properties.map((property) => {
+        const guests = property.maxAdults + property.maxChildren;
+
         const location = {
           city: property.location?.city?.trim() || DEFAULT_LOCATION.city,
           country:
@@ -102,7 +91,7 @@ export default function Property({ properties }: PropertyProps) {
                 <Separator orientation="vertical" />
                 <span>{property.bathrooms} baths</span>
                 <Separator orientation="vertical" />
-                <span>{property.guests} guests</span>
+                <span>{guests} guests</span>
               </div>
 
               <div className="flex items-center justify-between mb-4 pb-4 border-b border-border">
