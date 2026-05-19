@@ -17,6 +17,7 @@ import amenitiesAction from "@/features/host/properties/actions/amenities-action
 import photosAction from "@/features/host/properties/actions/photos-action";
 import pricingAction from "@/features/host/properties/actions/pricing-action";
 import bookingSettingsAction from "@/features/host/properties/actions/booking-settings-action";
+import publishedAction from "@/features/host/properties/actions/published-action";
 
 import basicInfoLoader from "@/features/host/properties/loaders/basic-info-loader";
 import propertiesLoader from "@/features/host/properties/loaders/properties-loader";
@@ -97,7 +98,7 @@ const dashboardRoutes = {
             {
               path: "review-listing",
               Component: ReviewListingPage,
-              // action: bookingSettingsAction,
+              action: publishedAction,
               handle: { title: "Review Listing" },
             },
           ],

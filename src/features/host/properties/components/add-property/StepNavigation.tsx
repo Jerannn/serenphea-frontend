@@ -23,6 +23,7 @@ export default function StepNavigation({
       <Button
         variant="ghost"
         onClick={goToPreviousStep}
+        disabled={isSubmitting}
         className="gap-2 text-muted-foreground hover:text-foreground hover:bg-secondary/80 transition-all rounded-xl px-4"
       >
         <ChevronLeft className="w-4 h-4" />
