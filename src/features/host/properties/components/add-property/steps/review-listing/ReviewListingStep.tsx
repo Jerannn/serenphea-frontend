@@ -14,6 +14,7 @@ export default function ReviewListingStep() {
       title="Review your listing"
       description="Here's what guests will see when they view your property."
     >
+      {/* <form id="review-property-form" onSubmit={onSubmit}> */}
       {/* Main Title & Edit Link */}
       <HeaderSection />
 
@@ -41,6 +42,7 @@ export default function ReviewListingStep() {
         {/* Sidebar */}
         <SidebarSection />
       </div>
+      {/* </form> */}
     </PropertyStepLayout>
   );
 }
