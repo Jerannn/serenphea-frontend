@@ -51,3 +51,21 @@ export const STEPS = [
   },
   { id: 7, title: "Review", description: "Final check", isCompleted: false },
 ];
+
+export const DEFAULT_LOCATION = {
+  city: "Unknown city",
+  country: "Unknown country",
+};
+
+export const DEFAULT_PRICING = {
+  basePrice: 0,
+};
+
+export const DEFAULT_BOOKING_SETTINGS = {
+  instantBook: false,
+  minNights: 1,
+  maxNights: 5,
+};
+
+export const DEFAULT_PROPERTY_IMAGE =
+  "https://placehold.co/800x500?text=No+Image+Available";

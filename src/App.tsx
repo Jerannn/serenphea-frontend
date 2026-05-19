@@ -1,11 +1,15 @@
 import { RouterProvider } from "react-router-dom";
 import { router } from "./router";
 import { Toaster } from "./components/ui/sonner";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from "./lib/queryClient";
 
 function App() {
   return (
     <>
-      <RouterProvider router={router} />
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
       <Toaster
         position="top-center"
         toastOptions={{
@@ -18,7 +22,8 @@ function App() {
             cancelButton:
               "bg-muted text-muted-foreground hover:bg-muted/80 rounded-md px-3 py-1.5 transition-colors",
             success: "group-[.toaster]:border-primary/30 [&_svg]:text-primary",
-            error: "group-[.toaster]:border-destructive/30 [&_svg]:text-destructive",
+            error:
+              "group-[.toaster]:border-destructive/30 [&_svg]:text-destructive",
             warning: "group-[.toaster]:border-accent/30 [&_svg]:text-accent",
             info: "group-[.toaster]:border-blue-500/30 [&_svg]:text-blue-500",
           },

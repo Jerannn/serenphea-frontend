@@ -1,5 +1,5 @@
-import { useLoaderData, useSubmit } from "react-router-dom";
-import type { Amenity, AmenityInput } from "../../../../types";
+import { useSubmit } from "react-router-dom";
+import type { AmenityInput } from "../../../../types";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
@@ -12,11 +12,15 @@ import { useEffect, useState } from "react";
 import { groupAmenitiesByCategory } from "@/features/host/properties/lib/utils";
 import { CATEGORY_ORDER } from "@/features/host/properties/lib/constants";
 import PropertyStepLayout from "../../PropertyStepLayout";
+import { useQuery } from "@tanstack/react-query";
+import { amenitiesQuery } from "@/features/host/properties/loaders/amenities-loader";
 
 export default function AmenitiesStep() {
-  const amenitiesList = useLoaderData<Amenity[]>();
   const submit = useSubmit();
-  const amenities = usePropertyStore((state) => state.property.amenities);
+  const { data: amenities = [] } = useQuery({ ...amenitiesQuery() });
+  const amenitiesDefault = usePropertyStore(
+    (state) => state.property.amenities,
+  );
 
   const [removeAmenityIds, setRemoveAmenityIds] = useState<string[]>([]);
 
@@ -29,12 +33,12 @@ export default function AmenitiesStep() {
   } = useForm<AmenityInput>({
     resolver: zodResolver(amenitySchema),
     defaultValues: {
-      amenityIds: amenities.map((amenity) => amenity.id),
+      amenityIds: amenitiesDefault.map((amenity) => amenity.id),
     },
   });
 
   const selectedAmenityIds = useWatch({ control, name: "amenityIds" });
-  const amenitiesGrouped = groupAmenitiesByCategory(amenitiesList);
+  const amenitiesGrouped = groupAmenitiesByCategory(amenities);
 
   const handleAmenityChange = (amenityId: string, checked: boolean) => {
     // Add
